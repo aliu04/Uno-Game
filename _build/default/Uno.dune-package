@@ -1,0 +1,46 @@
+(lang dune 3.10)
+(name Uno)
+(sections (lib .) (libexec .) (doc ../../doc/Uno))
+(files
+ (lib
+  (META
+   dune-package
+   game.ml
+   game.mli
+   opam
+   uno.a
+   uno.cma
+   uno.cmi
+   uno.cmt
+   uno.cmx
+   uno.cmxa
+   uno.ml
+   uno__Game.cmi
+   uno__Game.cmt
+   uno__Game.cmti
+   uno__Game.cmx))
+ (libexec (uno.cmxs))
+ (doc (README.md)))
+(library
+ (name Uno)
+ (kind normal)
+ (archives (byte uno.cma) (native uno.cmxa))
+ (plugins (byte uno.cma) (native uno.cmxs))
+ (native_archives uno.a)
+ (main_module_name Uno)
+ (modes byte native)
+ (modules
+  (wrapped
+   (group
+    (alias
+     (obj_name uno)
+     (visibility public)
+     (kind alias)
+     (source (path Uno) (impl (path uno.ml-gen))))
+    (name Uno)
+    (modules
+     (module
+      (obj_name uno__Game)
+      (visibility public)
+      (source (path Game) (intf (path game.mli)) (impl (path game.ml))))))
+   (wrapped true))))
