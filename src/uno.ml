@@ -16,7 +16,75 @@ type player = {
   win : bool option;
 }
 
-let all_cards = [ (Red, 1); (Red, 2); (Red, 3); (Red, 4) ]
+let red_cards =
+  [
+    (Red, 0);
+    (Red, 1);
+    (Red, 2);
+    (Red, 3);
+    (Red, 4);
+    (Red, 5);
+    (Red, 6);
+    (Red, 7);
+    (Red, 8);
+    (Red, 9);
+  ]
+
+let yellow_cards =
+  [
+    (Yellow, 0);
+    (Yellow, 1);
+    (Yellow, 2);
+    (Yellow, 3);
+    (Yellow, 4);
+    (Yellow, 5);
+    (Yellow, 6);
+    (Yellow, 7);
+    (Yellow, 8);
+    (Yellow, 9);
+  ]
+
+let blue_cards =
+  [
+    (Blue, 0);
+    (Blue, 1);
+    (Blue, 2);
+    (Blue, 3);
+    (Blue, 4);
+    (Blue, 5);
+    (Blue, 6);
+    (Blue, 7);
+    (Blue, 8);
+    (Blue, 9);
+  ]
+
+let green_cards =
+  [
+    (Green, 0);
+    (Green, 1);
+    (Green, 2);
+    (Green, 3);
+    (Green, 4);
+    (Green, 5);
+    (Green, 6);
+    (Green, 7);
+    (Green, 8);
+    (Green, 9);
+  ]
+
+(*SHUFFLE CODE IS COPY AND PASTED FROM STACK OVERFLOW
+    https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml*)
+let shuffle d =
+  let nd = List.map (fun c -> (Random.bits (), c)) d in
+  let sond = List.sort compare nd in
+  List.map snd sond
+
+let all_cards =
+  shuffle
+    (red_cards @ red_cards @ blue_cards @ blue_cards @ green_cards @ green_cards
+   @ yellow_cards @ yellow_cards)
+
+(* Potentially implement a functor that takes in the game instance to play the game*)
 
 module GameInstance : Game = struct
   type 'a t = {
@@ -33,16 +101,21 @@ module GameInstance : Game = struct
     | x, h :: t -> get_n_cards t (receive @ [ h ]) (x - 1)
     | _ -> raise (Invalid_argument "Not enough cards")
 
-  let create_player (card_list : card list) : player * card list =
-    let play_cards, remain_cards = get_n_cards card_list [] 2 in
-    ( { name = "Player 1"; cards = play_cards; curr_card = None; win = None },
+  let create_player (card_list : card list) (name : int) : player * card list =
+    let play_cards, remain_cards = get_n_cards card_list [] 7 in
+    ( {
+        name = string_of_int name;
+        cards = play_cards;
+        curr_card = None;
+        win = None;
+      },
       remain_cards )
 
   let rec create_players (game : 'a t) (player_num : int) : 'a t =
     match player_num with
     | 0 -> game
-    | _ ->
-        let player, cards = create_player game.available_cards in
+    | x ->
+        let player, cards = create_player game.available_cards x in
         create_players
           {
             available_cards = cards;
