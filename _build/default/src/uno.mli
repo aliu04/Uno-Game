@@ -14,8 +14,11 @@ module type Game = sig
   type 'a t
 
   val empty : 'a t
+  val get_player_number : 'a t -> int
+  val get_player_num_of_cards : 'a t -> int -> int
   val create_players : 'a t -> int -> 'a t
   val players_to_string : 'a t -> string
+  val cards_to_string : 'a t -> string
 end
 
 module GameInterface : Game

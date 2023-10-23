@@ -5,6 +5,8 @@ module type Game = sig
   type 'a t
 
   val empty : 'a t
+  val get_player_number : 'a t -> int
+  val get_player_num_of_cards : 'a t -> int -> int
   val create_players : 'a t -> int -> 'a t
   val players_to_string : 'a t -> string
   val cards_to_string : 'a t -> string
@@ -95,6 +97,11 @@ module GameInstance : Game = struct
   }
 
   let empty = { players = []; available_cards = all_cards; curr_card = None }
+  let get_player_number (game : 'a t) : int = List.length game.players
+
+  let get_player_num_of_cards (game : 'a t) (p_num : int) : int =
+    let player = List.nth game.players (p_num - 1) in
+    List.length player.cards
 
   let rec get_n_cards pool receive n =
     match (n, pool) with
