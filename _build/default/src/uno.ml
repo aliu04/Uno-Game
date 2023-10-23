@@ -5,8 +5,11 @@ module type Game = sig
   type 'a t
 
   val empty : 'a t
+  val get_player_number : 'a t -> int
+  val get_player_num_of_cards : 'a t -> int -> int
   val create_players : 'a t -> int -> 'a t
   val players_to_string : 'a t -> string
+  val cards_to_string : 'a t -> string
 end
 
 type player = {
@@ -94,6 +97,11 @@ module GameInstance : Game = struct
   }
 
   let empty = { players = []; available_cards = all_cards; curr_card = None }
+  let get_player_number (game : 'a t) : int = List.length game.players
+
+  let get_player_num_of_cards (game : 'a t) (p_num : int) : int =
+    let player = List.nth game.players (p_num - 1) in
+    List.length player.cards
 
   let rec get_n_cards pool receive n =
     match (n, pool) with
@@ -132,10 +140,40 @@ module GameInstance : Game = struct
   let players_to_string (game : 'a t) : string =
     let player_list = game.players in
     String.concat " " (get_player_names player_list [])
+
+  let color_to_string (col : color) : string =
+    match col with
+    | Red -> "Red"
+    | Green -> "Green"
+    | Yellow -> "Yellow"
+    | Blue -> "Blue"
+
+  let card_to_string (c : card) : string =
+    "(" ^ color_to_string (fst c) ^ ", " ^ string_of_int (snd c) ^ ")"
+
+  let rec card_list_to_string (c : card list) : string =
+    match c with
+    | [] -> ""
+    | h :: [] -> card_to_string h
+    | h :: t -> card_to_string h ^ "; " ^ card_list_to_string t
+
+  let rec players_cards_to_list (pl : player list) : string =
+    match pl with
+    | [] -> ""
+    | h :: t ->
+        (h.name ^ ": " ^ "[" ^ card_list_to_string h.cards)
+        ^ "]" ^ "\n" ^ players_cards_to_list t
+
+  let cards_to_string (game : 'a t) : string =
+    players_cards_to_list game.players
 end
 
 module GameInterface = GameInstance
 
+(* let create_game players =
+   GameInterface.players_to_string
+     (GameInterface.create_players GameInterface.empty (int_of_string players)) *)
+
 let create_game players =
-  GameInterface.players_to_string
+  GameInterface.cards_to_string
     (GameInterface.create_players GameInterface.empty (int_of_string players))

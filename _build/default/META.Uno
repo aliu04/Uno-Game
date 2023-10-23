@@ -1,6 +1,0 @@
-description = ""
-requires = ""
-archive(byte) = "uno.cma"
-archive(native) = "uno.cmxa"
-plugin(byte) = "uno.cma"
-plugin(native) = "uno.cmxs"
