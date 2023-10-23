@@ -1,8 +1,6 @@
 open OUnit2
 module Test_Game = Uno.GameInterface
 
-let pp_string s = "\"" ^ s ^ "\""
-
 let rec test_initial_number_of_cards (p_num : int) : bool =
   let game = Test_Game.create_players Test_Game.empty p_num in
   match p_num with
