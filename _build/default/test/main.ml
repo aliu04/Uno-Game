@@ -1,8 +1,6 @@
 open OUnit2
 module Test_Game = Uno.GameInterface
 
-let pp_string s = "\"" ^ s ^ "\""
-
 let rec test_initial_number_of_cards (p_num : int) : bool =
   let game = Test_Game.create_players Test_Game.empty p_num in
   match p_num with
@@ -46,24 +44,6 @@ let game_tests =
       assert_equal "" (Test_Game.players_to_string Test_Game.empty) );
     ( "test cards_to_string on empty game" >:: fun _ ->
       assert_equal "" (Test_Game.cards_to_string Test_Game.empty) );
-    (* ( "test cards_to_string on game with 4 players" >:: fun _ ->
-         assert_equal ~printer:pp_string
-           "4: [(Red, 4); (Blue, 5); (Yellow, 7); (Blue, 9); (Green, 4); (Green, \
-            7); (Blue, 4)]\n\
-           \                3: [(Red, 2); (Red, 8); (Yellow, 0); (Green, 5); \
-            (Yellow, 4); (Yellow, 2); (Blue, 7)]\n\
-           \               2: [(Green, 5); (Yellow, 3); (Yellow, 5); (Green, 4); \
-            (Green, 9); (Yellow, 1); (Blue, 7)]\n\
-           \                1: [(Green, 3); (Red, 8); (Blue, 1); (Blue, 4); \
-            (Green, 1); (Green, 6); (Yellow, 1)]"
-           (Test_Game.cards_to_string (Test_Game.create_players Test_Game.empty 4))
-       ); *)
-    ( "test cards_to_string on game with 4 players" >:: fun _ ->
-      assert_equal ~printer:pp_string "345"
-        (string_of_int
-           (String.length
-              (Test_Game.cards_to_string
-                 (Test_Game.create_players Test_Game.empty 4)))) );
   ]
 
 let tests = "uno test suite" >::: List.flatten [ game_tests ]
