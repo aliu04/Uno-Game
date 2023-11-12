@@ -1,9 +1,15 @@
-# dune exec bin/main.exe
+# dune exec test/main.exe
 # OCAMLPARAM: unset
 # Shared cache: disabled
+<<<<<<< HEAD
 # Workspace root: /Users/cindyliang/cs3110/3110_Final_Project
 # Auto-detected concurrency: 10
 $ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1/n28111y95plfxqlwcks8dxy00000gn/T/dune_a29175_output
+=======
+# Workspace root: /Users/helenlei/3110_Final_Project
+# Auto-detected concurrency: 12
+$ /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/d8/qbth0hrn6mb5ntkj6wqzg9ym0000gn/T/dune_64cfbb_output
+>>>>>>> 2ba3c02c67b3a110d2ee1e04b907935f012a2fc1
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -12,44 +18,43 @@ $ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1
 #  ; for_host = None
 #  ; fdo_target_exe = None
 #  ; build_dir = In_build_dir "default"
-#  ; ocaml_bin = External "/Users/cindyliang/.opam/cs3110-2023fa/bin"
-#  ; ocaml = Ok External "/Users/cindyliang/.opam/cs3110-2023fa/bin/ocaml"
-#  ; ocamlc = External "/Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt"
+#  ; ocaml_bin = External "/Users/helenlei/.opam/cs3110-2023fa/bin"
+#  ; ocaml = Ok External "/Users/helenlei/.opam/cs3110-2023fa/bin/ocaml"
+#  ; ocamlc = External "/Users/helenlei/.opam/cs3110-2023fa/bin/ocamlc.opt"
 #  ; ocamlopt =
-#      Ok External "/Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt"
+#      Ok External "/Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt"
 #  ; ocamldep =
-#      Ok External "/Users/cindyliang/.opam/cs3110-2023fa/bin/ocamldep.opt"
+#      Ok External "/Users/helenlei/.opam/cs3110-2023fa/bin/ocamldep.opt"
 #  ; ocamlmklib =
-#      Ok External "/Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlmklib.opt"
+#      Ok External "/Users/helenlei/.opam/cs3110-2023fa/bin/ocamlmklib.opt"
 #  ; env =
 #      map
 #        { "DUNE_OCAML_HARDCODED" :
-#            "/Users/cindyliang/.opam/cs3110-2023fa/lib/ocaml:/Users/cindyliang/.opam/cs3110-2023fa/lib"
+#            "/Users/helenlei/.opam/cs3110-2023fa/lib/ocaml:/Users/helenlei/.opam/cs3110-2023fa/lib"
 #        ; "DUNE_OCAML_STDLIB" :
-#            "/Users/cindyliang/.opam/cs3110-2023fa/lib/ocaml"
-#        ; "DUNE_SOURCEROOT" : "/Users/cindyliang/cs3110/3110_Final_Project"
-#        ; "INSIDE_DUNE" :
-#            "/Users/cindyliang/cs3110/3110_Final_Project/_build/default"
+#            "/Users/helenlei/.opam/cs3110-2023fa/lib/ocaml"
+#        ; "DUNE_SOURCEROOT" : "/Users/helenlei/3110_Final_Project"
+#        ; "INSIDE_DUNE" : "/Users/helenlei/3110_Final_Project/_build/default"
 #        ; "OCAMLFIND_IGNORE_DUPS_IN" :
-#            "/Users/cindyliang/cs3110/3110_Final_Project/_build/install/default/lib"
+#            "/Users/helenlei/3110_Final_Project/_build/install/default/lib"
 #        ; "OCAMLPATH" :
-#            "/Users/cindyliang/cs3110/3110_Final_Project/_build/install/default/lib"
+#            "/Users/helenlei/3110_Final_Project/_build/install/default/lib"
 #        ; "OCAMLTOP_INCLUDE_PATH" :
-#            "/Users/cindyliang/cs3110/3110_Final_Project/_build/install/default/lib/toplevel"
+#            "/Users/helenlei/3110_Final_Project/_build/install/default/lib/toplevel"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; findlib_paths =
-#      [ External "/Users/cindyliang/.opam/cs3110-2023fa/lib/ocaml"
-#      ; External "/Users/cindyliang/.opam/cs3110-2023fa/lib"
+#      [ External "/Users/helenlei/.opam/cs3110-2023fa/lib/ocaml"
+#      ; External "/Users/helenlei/.opam/cs3110-2023fa/lib"
 #      ]
 #  ; natdynlink_supported = true
 #  ; supports_shared_libraries = true
 #  ; ocaml_config =
 #      { version = "5.0.0"
 #      ; standard_library_default =
-#          "/Users/cindyliang/.opam/cs3110-2023fa/lib/ocaml"
-#      ; standard_library = "/Users/cindyliang/.opam/cs3110-2023fa/lib/ocaml"
+#          "/Users/helenlei/.opam/cs3110-2023fa/lib/ocaml"
+#      ; standard_library = "/Users/helenlei/.opam/cs3110-2023fa/lib/ocaml"
 #      ; standard_runtime = "the_standard_runtime_variable_was_deleted"
 #      ; ccomp_type = "cc"
 #      ; c_compiler = "cc"
@@ -116,9 +121,14 @@ $ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1
 #      ; windows_unicode = false
 #      }
 #  }
+<<<<<<< HEAD
 $ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.uno.objs/byte -no-alias-deps -opaque -o src/.uno.objs/byte/uno.cmi -c -intf src/uno.mli)
 $ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I bin/.main.eobjs/byte -I src/.uno.objs/byte -no-alias-deps -opaque -o bin/.main.eobjs/byte/dune__exe__Main.cmi -c -intf bin/main.mli)
 $ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I bin/.main.eobjs/byte -I bin/.main.eobjs/native -I src/.uno.objs/byte -I src/.uno.objs/native -intf-suffix .ml -no-alias-deps -opaque -o bin/.main.eobjs/native/dune__exe__Main.cmx -c -impl bin/main.ml)
 $ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.uno.objs/byte -I src/.uno.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.uno.objs/native/uno.cmx -c -impl src/uno.ml)
 $ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/uno.cmxa src/.uno.objs/native/uno.cmx)
 $ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe src/uno.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)
+=======
+$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I test/.main.eobjs/byte -I test/.main.eobjs/native -I /Users/helenlei/.opam/cs3110-2023fa/lib/ocaml/unix -I /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2 -I /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2/advanced -I /Users/helenlei/.opam/cs3110-2023fa/lib/seq -I /Users/helenlei/.opam/cs3110-2023fa/lib/stdlib-shims -I src/.uno.objs/byte -I src/.uno.objs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.main.eobjs/native/dune__exe__Main.cmx -c -impl test/main.ml)
+$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o test/main.exe src/uno.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/ocaml/unix/unix.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/stdlib-shims/stdlib_shims.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)
+>>>>>>> 2ba3c02c67b3a110d2ee1e04b907935f012a2fc1

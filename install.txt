@@ -1,0 +1,10 @@
+Installation Instructions
+
+First, ensure you have OCaml installed on your device.
+
+1. Unzip the zip file
+2. Run make build in the root directory
+3. Run make uno in terminal in the root directory to start playing 
+
+Other commands
+- make test runs the tests in test/main.ml 

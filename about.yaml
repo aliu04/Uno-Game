@@ -1,0 +1,27 @@
+---
+# Members of your group.
+group:
+  - name: Cindy Liang
+    netid: cl2329
+  - name: Ashley Liu
+    netid: al844
+  - name: Helen Lei
+    netid: hl883
+# Your PM.
+pm:
+  name: Emma Li
+  netid: ejl258
+# Set to false if you don't want your gallery entry to be public.
+publish: true
+# Pithy title
+title: "Uno"
+# OK if this is a Cornell Github link, but public gallery viewers won't be able to see it.
+git-repo: "https://github.com/cindy-x-liang/3110_Final_Project"
+# If you have no demo screencast, replace the url string with an empty string ""
+demo-video-url: ""
+# Write a short, attention-grabbing description of your project.
+desc: >
+  Our project is a game of Uno that can be played on the command line. The goal 
+  of the game is to be the first player who finishes placing down all their 
+  cards. The cards each have a color and a number and only like cards can be 
+  placed down after each other. Our game supports 4-10 players. 
