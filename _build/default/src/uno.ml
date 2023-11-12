@@ -7,6 +7,7 @@ module type Game = sig
   val empty : 'a t
   val create_players : 'a t -> int -> 'a t
   val players_to_string : 'a t -> string
+  val cards_to_string : 'a t -> string
 end
 
 type player = {
@@ -132,10 +133,40 @@ module GameInstance : Game = struct
   let players_to_string (game : 'a t) : string =
     let player_list = game.players in
     String.concat " " (get_player_names player_list [])
+
+  let color_to_string (col : color) : string =
+    match col with
+    | Red -> "Red"
+    | Green -> "Green"
+    | Yellow -> "Yellow"
+    | Blue -> "Blue"
+
+  let card_to_string (c : card) : string =
+    "(" ^ color_to_string (fst c) ^ ", " ^ string_of_int (snd c) ^ ")"
+
+  let rec card_list_to_string (c : card list) : string =
+    match c with
+    | [] -> ""
+    | h :: [] -> card_to_string h
+    | h :: t -> card_to_string h ^ "; " ^ card_list_to_string t
+
+  let rec players_cards_to_list (pl : player list) : string =
+    match pl with
+    | [] -> ""
+    | h :: t ->
+        (h.name ^ ": " ^ "[" ^ card_list_to_string h.cards)
+        ^ "]" ^ "\n" ^ players_cards_to_list t
+
+  let cards_to_string (game : 'a t) : string =
+    players_cards_to_list game.players
 end
 
 module GameInterface = GameInstance
 
+(* let create_game players =
+   GameInterface.players_to_string
+     (GameInterface.create_players GameInterface.empty (int_of_string players)) *)
+
 let create_game players =
-  GameInterface.players_to_string
+  GameInterface.cards_to_string
     (GameInterface.create_players GameInterface.empty (int_of_string players))
