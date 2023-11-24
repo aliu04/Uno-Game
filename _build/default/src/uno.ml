@@ -1,6 +1,14 @@
 type color = Red | Green | Yellow | Blue
 type card = color * int
 
+type player = {
+  name : string;
+  mutable numcards : int;
+  mutable cards : card list;
+  curr_card_player : int option;
+  win : bool option;
+}
+
 module type Game = sig
   type 'a t
 
@@ -17,14 +25,9 @@ module type Game = sig
   val print_curr_card : 'a t -> unit
   val chance_curr_card : 'a t -> card option -> unit
   val add_curr_card_to_cards : 'a t -> card list -> card list
+  val check_if_win : player list -> bool
+  val get_players : 'a t -> player list
 end
-
-type player = {
-  name : string;
-  mutable cards : card list;
-  curr_card_player : int option;
-  win : bool option;
-}
 
 let red_cards =
   [
@@ -118,7 +121,15 @@ module GameInstance : Game = struct
       'a t =
     let player = List.nth game.players p_num in
     player.cards <- card_list;
+    player.numcards <- List.length card_list;
     game
+
+  let get_players (game : 'a t) : player list = game.players
+
+  let rec check_if_win player_list : bool =
+    match player_list with
+    | [] -> false
+    | h :: t -> if h.numcards = 0 then true else check_if_win t
 
   let rec get_n_cards pool receive n =
     match (n, pool) with
@@ -130,6 +141,7 @@ module GameInstance : Game = struct
     let play_cards, remain_cards = get_n_cards card_list [] 7 in
     ( {
         name = string_of_int name;
+        numcards = 7;
         cards = play_cards;
         curr_card_player = None;
         win = None;
@@ -286,12 +298,11 @@ let player_turn game round_num =
 
 let rec play_game num_rounds game =
   GameInterface.print_curr_card game;
-  match num_rounds with
-  | 0 -> print_endline "bye"
-  | x -> play_game (x - 1) (player_turn game x)
+  if GameInterface.check_if_win (GameInterface.get_players game) then
+    print_endline "bye"
+  else play_game (num_rounds + 1) (player_turn game num_rounds)
 
 let create_game players =
-  play_game
-    (7 * int_of_string players)
+  play_game 0
     (GameInterface.make_curr_card
        (GameInterface.create_players GameInterface.empty (int_of_string players)))
