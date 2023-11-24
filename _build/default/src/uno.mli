@@ -6,7 +6,7 @@ type card = color * int
 type player = {
   name : string;
   mutable cards : card list;
-  curr_card : int option;
+  curr_card_player : int option;
   win : bool option;
 }
 
@@ -22,6 +22,10 @@ module type Game = sig
   val cards_to_string : 'a t -> string
   val card_list_to_string : card list -> string
   val edit_player_cards : 'a t -> int -> card list -> 'a t
+  val make_curr_card : 'a t -> 'a t
+  val print_curr_card : 'a t -> unit
+  val chance_curr_card : 'a t -> card option -> unit
+  val add_curr_card_to_cards : 'a t -> card list -> card list
 end
 
 module GameInterface : Game

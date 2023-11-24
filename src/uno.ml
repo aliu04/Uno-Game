@@ -13,12 +13,16 @@ module type Game = sig
   val cards_to_string : 'a t -> string
   val card_list_to_string : card list -> string
   val edit_player_cards : 'a t -> int -> card list -> 'a t
+  val make_curr_card : 'a t -> 'a t
+  val print_curr_card : 'a t -> unit
+  val chance_curr_card : 'a t -> card option -> unit
+  val add_curr_card_to_cards : 'a t -> card list -> card list
 end
 
 type player = {
   name : string;
   mutable cards : card list;
-  curr_card : int option;
+  curr_card_player : int option;
   win : bool option;
 }
 
@@ -95,8 +99,8 @@ let all_cards =
 module GameInstance : Game = struct
   type 'a t = {
     players : player list;
-    available_cards : card list;
-    curr_card : card option;
+    mutable available_cards : card list;
+    mutable curr_card : card option;
   }
 
   let empty = { players = []; available_cards = all_cards; curr_card = None }
@@ -127,7 +131,7 @@ module GameInstance : Game = struct
     ( {
         name = string_of_int name;
         cards = play_cards;
-        curr_card = None;
+        curr_card_player = None;
         win = None;
       },
       remain_cards )
@@ -144,6 +148,12 @@ module GameInstance : Game = struct
             curr_card = game.curr_card;
           }
           (player_num - 1)
+
+  let make_curr_card (game : 'a t) : 'a t =
+    let curr_card, remain =
+      match game.available_cards with [] -> (None, []) | h :: t -> (Some h, t)
+    in
+    { players = game.players; available_cards = remain; curr_card }
 
   let rec get_player_names lst result =
     match lst with
@@ -179,6 +189,20 @@ module GameInstance : Game = struct
 
   let cards_to_string (game : 'a t) : string =
     players_cards_to_list game.players
+
+  let print_curr_card (game : 'a t) : unit =
+    match game.curr_card with
+    | None -> print_string "\n"
+    | Some x -> print_string (card_to_string x ^ "\n")
+
+  let chance_curr_card game card : unit = game.curr_card <- card
+
+  let add_curr_card_to_cards game cards : card list =
+    match game.available_cards with
+    | [] -> cards
+    | h :: t ->
+        game.available_cards <- t;
+        h :: cards
 end
 
 module GameInterface = GameInstance
@@ -202,26 +226,46 @@ let display_player_cards game round_num =
        (GameInterface.get_player_cards game
           (round_num mod GameInterface.get_player_number game)))
 
+(* need to change this so that the current card is the users selection *)
 let rec remove_card idx lst =
   match (idx, lst) with
   | 0, _ :: t -> t
   | x, h :: t -> h :: remove_card (x - 1) t
   | _ -> raise (Invalid_argument "Invalid card")
 
-let rec let_player_select game round_num =
+let rec get_selected_card idx lst =
+  match (idx, lst) with
+  | 0, x :: _ -> x
+  | x, _ :: t -> get_selected_card (x - 1) t
+  | _ -> raise (Invalid_argument "Invalid card")
+
+let let_player_select game round_num =
   print_endline "Select a card to place down";
   print_string "> ";
   let input = read_line () in
   match input with
   | "" ->
-      print_endline "please select a card";
-      let_player_select game round_num
+      let add_card_to_player_cards =
+        GameInterface.add_curr_card_to_cards game
+          (GameInterface.get_player_cards game
+             (round_num mod GameInterface.get_player_number game))
+      in
+      print_endline (GameInterface.card_list_to_string add_card_to_player_cards);
+      GameInterface.edit_player_cards game
+        (round_num mod GameInterface.get_player_number game)
+        add_card_to_player_cards
   | _ ->
       let cards_post_remove =
         remove_card (int_of_string input)
           (GameInterface.get_player_cards game
              (round_num mod GameInterface.get_player_number game))
       in
+      let card_selected =
+        get_selected_card (int_of_string input)
+          (GameInterface.get_player_cards game
+             (round_num mod GameInterface.get_player_number game))
+      in
+      GameInterface.chance_curr_card game (Some card_selected);
       print_endline (GameInterface.card_list_to_string cards_post_remove);
       print_endline "";
       GameInterface.edit_player_cards game
@@ -232,7 +276,16 @@ let player_turn game round_num =
   display_player_cards game round_num;
   let_player_select game round_num
 
+(* let card_to_string (c : card) : string =
+     "(" ^ color_to_string (fst c) ^ ", " ^ string_of_int (snd c) ^ ")"
+
+   let print_curr_card game =
+     match game.curr_card with
+     | None -> print_string ""
+     | Some x -> print_string card_to_string x *)
+
 let rec play_game num_rounds game =
+  GameInterface.print_curr_card game;
   match num_rounds with
   | 0 -> print_endline "bye"
   | x -> play_game (x - 1) (player_turn game x)
@@ -240,4 +293,5 @@ let rec play_game num_rounds game =
 let create_game players =
   play_game
     (7 * int_of_string players)
-    (GameInterface.create_players GameInterface.empty (int_of_string players))
+    (GameInterface.make_curr_card
+       (GameInterface.create_players GameInterface.empty (int_of_string players)))
