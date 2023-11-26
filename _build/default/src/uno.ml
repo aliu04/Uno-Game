@@ -1,6 +1,12 @@
 type color = Red | Green | Yellow | Blue
 type special = Reverse | Skip
-type card = Regular of color * int | Special of color * special
+
+type card =
+  | Regular of color * int
+  | Special of color * special
+  | Wild
+  | PlacedWild of color
+
 type directions = Clockwise | Counterclockwise
 
 type player = {
@@ -28,14 +34,13 @@ module type Game = sig
   val chance_curr_card : 'a t -> card option -> unit
   val add_curr_card_to_cards : 'a t -> card list -> card list
   val check_if_win : player list -> bool
-  val check_if_skip : card -> bool
   val get_players : 'a t -> player list
   val get_curr_card : 'a t -> card
   val change_direction : 'a t -> unit
   val get_direction : 'a t -> directions
-  val check_if_reverse : card -> bool
   val next_player : 'a t -> 'a t
   val get_curr_player : 'a t -> int
+  val handle_wild : card option -> card option
 end
 
 let red_cards =
@@ -102,6 +107,8 @@ let green_cards =
     Special (Blue, Skip);
   ]
 
+let wild_cards = [ Wild ]
+
 (*SHUFFLE CODE IS COPY AND PASTED FROM STACK OVERFLOW
     https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml*)
 let shuffle d =
@@ -112,7 +119,7 @@ let shuffle d =
 let all_cards =
   shuffle
     (red_cards @ red_cards @ blue_cards @ blue_cards @ green_cards @ green_cards
-   @ yellow_cards @ yellow_cards)
+   @ yellow_cards @ yellow_cards @ wild_cards)
 
 (* Potentially implement a functor that takes in the game instance to play the game*)
 
@@ -244,6 +251,8 @@ module GameInstance : Game = struct
     | Regular (c, v) -> "(" ^ color_to_string c ^ ", " ^ string_of_int v ^ ")"
     | Special (c, v) ->
         "(" ^ color_to_string c ^ ", " ^ special_to_string v ^ ")"
+    | Wild -> "(Wild)"
+    | PlacedWild c -> "(" ^ color_to_string c ^ ")"
 
   let rec card_list_to_string (c : card list) : string =
     match c with
@@ -279,6 +288,23 @@ module GameInstance : Game = struct
     match game.direction with
     | Clockwise -> game.direction <- Counterclockwise
     | Counterclockwise -> game.direction <- Clockwise
+
+  let rec handle_wild (card : card option) : card option =
+    match card with
+    | Some Wild -> (
+        print_endline "Select a color";
+        print_string "> ";
+        let input = String.lowercase_ascii (read_line ()) in
+        match input with
+        | "red" -> Some (PlacedWild Red)
+        | "yellow" -> Some (PlacedWild Yellow)
+        | "blue" -> Some (PlacedWild Blue)
+        | "green" -> Some (PlacedWild Green)
+        | _ ->
+            print_endline "Please select a valid color";
+            handle_wild card)
+    | Some x -> Some x
+    | None -> None
 
   let next_player (game : 'a t) : 'a t =
     if check_if_reverse (get_curr_card game) then change_direction game;
@@ -361,7 +387,8 @@ let let_player_select game =
           (GameInterface.get_player_cards game
              (GameInterface.get_curr_player game))
       in
-      GameInterface.chance_curr_card game (Some card_selected);
+      GameInterface.chance_curr_card game
+        (GameInterface.handle_wild (Some card_selected));
       print_endline (GameInterface.card_list_to_string cards_post_remove);
       print_endline "";
       GameInterface.edit_player_cards game
