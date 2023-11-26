@@ -1,0 +1,9 @@
+2023-11-25T21:09:16+00:00 Helen.local#02 I: Start test uno test suite:1:test if create_players makes the correct number of players for a 10 player game.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: Test uno test suite:1:test if create_players makes the correct number of players for a 10 player game is successful.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: End test uno test suite:1:test if create_players makes the correct number of players for a 10 player game.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: Start test uno test suite:4:test create_players gives 10 players 7 cards each.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: Test uno test suite:4:test create_players gives 10 players 7 cards each is successful.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: End test uno test suite:4:test create_players gives 10 players 7 cards each.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: Start test uno test suite:6:test players_to_string when 10 players.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: Test uno test suite:6:test players_to_string when 10 players is successful.
+2023-11-25T21:09:16+00:00 Helen.local#02 I: End test uno test suite:6:test players_to_string when 10 players.

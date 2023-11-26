@@ -1,7 +1,9 @@
 (** The signature of sampleable bags (multisets). *)
 type color = Red | Green | Yellow | Blue
 
-type card = color * int
+type special = Reverse | Skip
+type card = Regular of color * int | Special of color * special
+type directions = Clockwise | Counterclockwise
 
 type player = {
   name : string;
@@ -28,7 +30,14 @@ module type Game = sig
   val chance_curr_card : 'a t -> card option -> unit
   val add_curr_card_to_cards : 'a t -> card list -> card list
   val check_if_win : player list -> bool
+  val check_if_skip : card -> bool
   val get_players : 'a t -> player list
+  val get_curr_card : 'a t -> card
+  val change_direction : 'a t -> unit
+  val get_direction : 'a t -> directions
+  val check_if_reverse : card -> bool
+  val next_player : 'a t -> 'a t
+  val get_curr_player : 'a t -> int
 end
 
 module GameInterface : Game

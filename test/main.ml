@@ -44,6 +44,12 @@ let game_tests =
       assert_equal "" (Test_Game.players_to_string Test_Game.empty) );
     ( "test cards_to_string on empty game" >:: fun _ ->
       assert_equal "" (Test_Game.cards_to_string Test_Game.empty) );
+    ( "test next_player" >:: fun _ ->
+      assert_equal 1
+        (Test_Game.get_curr_player
+           (Test_Game.next_player
+              (Test_Game.make_curr_card
+                 (Test_Game.create_players Test_Game.empty 4)))) );
   ]
 
 let tests = "uno test suite" >::: List.flatten [ game_tests ]
