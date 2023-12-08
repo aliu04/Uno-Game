@@ -467,7 +467,7 @@ let rec let_player_select game =
       (GameInterface.get_curr_player game)
       add_card_to_player_cards)
   else
-    let input = GameInterface.select_card game in
+    let input = GameInterface.select_card () in
 
     let cards_post_remove =
       remove_card input
