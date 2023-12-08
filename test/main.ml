@@ -1,4 +1,5 @@
 open OUnit2
+open Uno
 module Test_Game = Uno.GameInterface
 
 let rec test_initial_number_of_cards (p_num : int) : bool =
@@ -9,6 +10,17 @@ let rec test_initial_number_of_cards (p_num : int) : bool =
       if Test_Game.get_player_num_of_cards game p_num = 7 then
         test_initial_number_of_cards (p_num - 1)
       else false
+
+let test_cards =
+  [
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+  ]
 
 let game_tests =
   [
@@ -50,6 +62,11 @@ let game_tests =
            (Test_Game.next_player
               (Test_Game.make_curr_card
                  (Test_Game.create_players Test_Game.empty 4)))) );
+    ( "test card_list_to_string" >:: fun _ ->
+      assert_equal
+        "(Blue, 4); (Red, 1); (Green, 3); (Yellow, 7); (Green, Reverse); (Red, \
+         Skip); (Wild)"
+        (Test_Game.card_list_to_string test_cards) );
   ]
 
 let tests = "uno test suite" >::: List.flatten [ game_tests ]

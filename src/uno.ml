@@ -43,7 +43,10 @@ module type Game = sig
   val next_player : 'a t -> 'a t
   val get_curr_player : 'a t -> int
   val get_curr_player_name : 'a t -> string
-  val handle_wild : card option -> card option
+  val handle_wild : card option -> string -> card option
+  val select_card : unit -> int
+  val save_player_name : unit -> string
+  val save_wild_input : unit -> string
 end
 
 let red_cards =
@@ -148,6 +151,10 @@ module GameInstance : Game = struct
       direction = Clockwise;
     }
 
+  let save_user_input (print_func : unit) : string =
+    print_func;
+    read_line ()
+
   let get_player_number (game : 'a t) : int = List.length game.players
 
   let get_player_num_of_cards (game : 'a t) (p_num : int) : int =
@@ -201,12 +208,16 @@ module GameInstance : Game = struct
     | x, h :: t -> get_n_cards t (receive @ [ h ]) (x - 1)
     | _ -> raise (Invalid_argument "Not enough cards")
 
-  let create_player (card_list : card list) : player * card list =
-    print_endline "Enter Player name: ";
-    let input = read_line () in
+  let save_player_name () : string =
+    save_user_input
+      (print_endline "Enter Player name: ";
+       print_string ">")
+
+  let create_player (card_list : card list) (input_name : string) :
+      player * card list =
     let play_cards, remain_cards = get_n_cards card_list [] 7 in
     ( {
-        name = input;
+        name = input_name;
         numcards = 7;
         cards = play_cards;
         curr_card_player = None;
@@ -218,7 +229,9 @@ module GameInstance : Game = struct
     match player_num with
     | 0 -> game
     | _ ->
-        let player, cards = create_player game.available_cards in
+        let player, cards =
+          create_player game.available_cards (save_player_name ())
+        in
         create_players
           {
             available_cards = cards;
@@ -310,22 +323,31 @@ module GameInstance : Game = struct
     | Clockwise -> game.direction <- Counterclockwise
     | Counterclockwise -> game.direction <- Clockwise
 
-  let rec handle_wild (card : card option) : card option =
+  let save_wild_input () : string =
+    String.lowercase_ascii
+      (save_user_input
+         (print_endline "Select a color";
+          print_string "> "))
+
+  let rec handle_wild (card : card option) (user_input : string) : card option =
     match card with
     | Some Wild -> (
-        print_endline "Select a color";
-        print_string "> ";
-        let input = String.lowercase_ascii (read_line ()) in
-        match input with
+        match user_input with
         | "red" -> Some (PlacedWild Red)
         | "yellow" -> Some (PlacedWild Yellow)
         | "blue" -> Some (PlacedWild Blue)
         | "green" -> Some (PlacedWild Green)
         | _ ->
             print_endline "Please select a valid color";
-            handle_wild card)
+            handle_wild card (save_wild_input ()))
     | Some x -> Some x
     | None -> None
+
+  let select_card () : int =
+    int_of_string
+      (save_user_input
+         (print_endline "Select a card to place down";
+          print_string "> "))
 
   let next_player (game : 'a t) : 'a t =
     (if check_if_reverse (get_curr_card game) then change_direction game;
@@ -444,17 +466,16 @@ let rec let_player_select game =
     GameInterface.edit_player_cards game
       (GameInterface.get_curr_player game)
       add_card_to_player_cards)
-  else (
-    print_endline "Select a card to place down";
-    print_string "> ";
-    let input = read_line () in
+  else
+    let input = GameInterface.select_card game in
+
     let cards_post_remove =
-      remove_card (int_of_string input)
+      remove_card input
         (GameInterface.get_player_cards game
            (GameInterface.get_curr_player game))
     in
     let card_selected =
-      get_selected_card (int_of_string input)
+      get_selected_card input
         (GameInterface.get_player_cards game
            (GameInterface.get_curr_player game))
     in
@@ -462,7 +483,8 @@ let rec let_player_select game =
     let card_validated = validate_card card_selected prev_card in
     if card_validated then (
       GameInterface.chance_curr_card game
-        (GameInterface.handle_wild (Some card_selected));
+        (GameInterface.handle_wild (Some card_selected)
+           (GameInterface.save_wild_input ()));
       print_endline (GameInterface.card_list_to_string cards_post_remove);
       print_endline "";
       GameInterface.edit_player_cards game
@@ -472,7 +494,7 @@ let rec let_player_select game =
       print_endline
         (GameInterface.card_to_string card_selected
         ^ " is an invalid card, please pick a valid card");
-      let_player_select game))
+      let_player_select game)
 
 let player_turn game =
   display_player_cards game;

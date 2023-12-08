@@ -45,7 +45,10 @@ module type Game = sig
   val next_player : 'a t -> 'a t
   val get_curr_player : 'a t -> int
   val get_curr_player_name : 'a t -> string
-  val handle_wild : card option -> card option
+  val handle_wild : card option -> string -> card option
+  val select_card : unit -> int
+  val save_player_name : unit -> string
+  val save_wild_input : unit -> string
 end
 
 module GameInterface : Game
