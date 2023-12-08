@@ -1,7 +1,7 @@
 (** The signature of sampleable bags (multisets). *)
 type color = Red | Green | Yellow | Blue
 
-type special = Reverse | Skip
+type special = Reverse | Skip | PlusTwo
 
 type card =
   | Regular of color * int
@@ -28,6 +28,7 @@ module type Game = sig
   val get_player_cards : 'a t -> int -> card list
   val create_players : 'a t -> int -> 'a t
   val players_to_string : 'a t -> string
+  val card_to_string : card -> string
   val cards_to_string : 'a t -> string
   val card_list_to_string : card list -> string
   val edit_player_cards : 'a t -> int -> card list -> 'a t
@@ -35,6 +36,7 @@ module type Game = sig
   val print_curr_card : 'a t -> unit
   val chance_curr_card : 'a t -> card option -> unit
   val add_curr_card_to_cards : 'a t -> card list -> card list
+  val add_cards_to_hand : 'a t -> int -> int -> card list
   val check_if_win : player list -> bool
   val get_players : 'a t -> player list
   val get_curr_card : 'a t -> card
@@ -42,6 +44,7 @@ module type Game = sig
   val get_direction : 'a t -> directions
   val next_player : 'a t -> 'a t
   val get_curr_player : 'a t -> int
+  val get_curr_player_name : 'a t -> string
   val handle_wild : card option -> card option
 end
 

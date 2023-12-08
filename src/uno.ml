@@ -1,5 +1,5 @@
 type color = Red | Green | Yellow | Blue
-type special = Reverse | Skip
+type special = Reverse | Skip | PlusTwo
 
 type card =
   | Regular of color * int
@@ -26,6 +26,7 @@ module type Game = sig
   val get_player_cards : 'a t -> int -> card list
   val create_players : 'a t -> int -> 'a t
   val players_to_string : 'a t -> string
+  val card_to_string : card -> string
   val cards_to_string : 'a t -> string
   val card_list_to_string : card list -> string
   val edit_player_cards : 'a t -> int -> card list -> 'a t
@@ -33,6 +34,7 @@ module type Game = sig
   val print_curr_card : 'a t -> unit
   val chance_curr_card : 'a t -> card option -> unit
   val add_curr_card_to_cards : 'a t -> card list -> card list
+  val add_cards_to_hand : 'a t -> int -> int -> card list
   val check_if_win : player list -> bool
   val get_players : 'a t -> player list
   val get_curr_card : 'a t -> card
@@ -40,6 +42,7 @@ module type Game = sig
   val get_direction : 'a t -> directions
   val next_player : 'a t -> 'a t
   val get_curr_player : 'a t -> int
+  val get_curr_player_name : 'a t -> string
   val handle_wild : card option -> card option
 end
 
@@ -57,6 +60,7 @@ let red_cards =
     Regular (Red, 9);
     Special (Red, Reverse);
     Special (Red, Skip);
+    Special (Red, PlusTwo);
   ]
 
 let yellow_cards =
@@ -73,6 +77,7 @@ let yellow_cards =
     Regular (Yellow, 9);
     Special (Yellow, Reverse);
     Special (Yellow, Skip);
+    Special (Yellow, PlusTwo);
   ]
 
 let blue_cards =
@@ -89,6 +94,7 @@ let blue_cards =
     Regular (Blue, 9);
     Special (Blue, Reverse);
     Special (Blue, Skip);
+    Special (Blue, PlusTwo);
   ]
 
 let green_cards =
@@ -104,7 +110,8 @@ let green_cards =
     Regular (Green, 8);
     Regular (Green, 9);
     Special (Green, Reverse);
-    Special (Blue, Skip);
+    Special (Green, Skip);
+    Special (Green, PlusTwo);
   ]
 
 let wild_cards = [ Wild ]
@@ -183,16 +190,23 @@ module GameInstance : Game = struct
     | Special (_, v) -> if v = Reverse then true else false
     | _ -> false
 
+  let check_if_plus card : bool =
+    match card with
+    | Special (_, v) -> if v = PlusTwo then true else false
+    | _ -> false
+
   let rec get_n_cards pool receive n =
     match (n, pool) with
     | 0, _ -> (receive, pool)
     | x, h :: t -> get_n_cards t (receive @ [ h ]) (x - 1)
     | _ -> raise (Invalid_argument "Not enough cards")
 
-  let create_player (card_list : card list) (name : int) : player * card list =
+  let create_player (card_list : card list) : player * card list =
+    print_endline "Enter Player name: ";
+    let input = read_line () in
     let play_cards, remain_cards = get_n_cards card_list [] 7 in
     ( {
-        name = string_of_int name;
+        name = input;
         numcards = 7;
         cards = play_cards;
         curr_card_player = None;
@@ -203,8 +217,8 @@ module GameInstance : Game = struct
   let rec create_players (game : 'a t) (player_num : int) : 'a t =
     match player_num with
     | 0 -> game
-    | x ->
-        let player, cards = create_player game.available_cards x in
+    | _ ->
+        let player, cards = create_player game.available_cards in
         create_players
           {
             available_cards = cards;
@@ -244,7 +258,10 @@ module GameInstance : Game = struct
     | Blue -> "Blue"
 
   let special_to_string (spec : special) : string =
-    match spec with Reverse -> "Reverse" | Skip -> "Skip"
+    match spec with
+    | Reverse -> "Reverse"
+    | Skip -> "Skip"
+    | PlusTwo -> "Plus Two"
 
   let card_to_string (c : card) : string =
     match c with
@@ -284,6 +301,10 @@ module GameInstance : Game = struct
         game.available_cards <- t;
         h :: cards
 
+  let add_cards_to_hand game p_num num : card list =
+    let player = List.nth game.players (p_num - 1) in
+    fst (get_n_cards game.available_cards player.cards num)
+
   let change_direction (game : 'a t) : unit =
     match game.direction with
     | Clockwise -> game.direction <- Counterclockwise
@@ -307,7 +328,12 @@ module GameInstance : Game = struct
     | None -> None
 
   let next_player (game : 'a t) : 'a t =
-    if check_if_reverse (get_curr_card game) then change_direction game;
+    (if check_if_reverse (get_curr_card game) then change_direction game;
+     if check_if_plus (get_curr_card game) then
+       let next_player = (game.curr_player + 1) mod get_player_number game in
+       ignore
+         (edit_player_cards game next_player
+            (add_cards_to_hand game next_player 2)));
     match game.direction with
     | Clockwise ->
         if check_if_skip (get_curr_card game) then
@@ -327,6 +353,9 @@ module GameInstance : Game = struct
         game
 
   let get_curr_player (game : 'a t) : int = game.curr_player
+
+  let get_curr_player_name (game : 'a t) : string =
+    (List.nth game.players game.curr_player).name
 end
 
 module GameInterface = GameInstance
@@ -341,8 +370,7 @@ module GameInterface = GameInstance
    | [], _ -> raise (Invalid_argument "Invalid card") *)
 
 let display_player_cards game =
-  print_endline
-    ("Player " ^ string_of_int (GameInterface.get_curr_player game) ^ " turn");
+  print_endline (GameInterface.get_curr_player_name game ^ "'s turn");
   print_endline
     (GameInterface.card_list_to_string
        (GameInterface.get_player_cards game
@@ -361,39 +389,90 @@ let rec get_selected_card idx lst =
   | x, _ :: t -> get_selected_card (x - 1) t
   | _ -> raise (Invalid_argument "Invalid card")
 
-let let_player_select game =
-  print_endline "Select a card to place down";
-  print_string "> ";
-  let input = read_line () in
-  match input with
-  | "" ->
-      let add_card_to_player_cards =
-        GameInterface.add_curr_card_to_cards game
-          (GameInterface.get_player_cards game
-             (GameInterface.get_curr_player game))
-      in
-      print_endline (GameInterface.card_list_to_string add_card_to_player_cards);
-      GameInterface.edit_player_cards game
+let validate_card (prev : card) (selected : card) : bool =
+  match prev with
+  | Regular (oldColor, oldNum) -> (
+      match selected with
+      | Regular (nColor, nNum) ->
+          if oldColor = nColor || oldNum = nNum then true else false
+      | Special (nColor, _) -> if oldColor = nColor then true else false
+      | Wild -> true
+      | _ -> false)
+  | Special (oldColor, oldSpec) -> (
+      match selected with
+      | Regular (nColor, _) -> if oldColor = nColor then true else false
+      | Special (nColor, nSpec) ->
+          if oldColor = nColor || oldSpec = nSpec then true else false
+      | Wild -> true
+      | _ -> false)
+  | PlacedWild oldColor -> (
+      match selected with
+      | Regular (nColor, _) -> if oldColor = nColor then true else false
+      | Special (nColor, _) -> if oldColor = nColor then true else false
+      | Wild -> true
+      | _ -> false)
+  | _ -> false
+
+let check_forced_pickup game =
+  let playerHand =
+    GameInterface.get_player_cards game (GameInterface.get_curr_player game)
+  in
+  let rec check_hand hand =
+    match hand with
+    | [] -> true
+    | h :: t ->
+        if validate_card h (GameInterface.get_curr_card game) = false then
+          check_hand t
+        else false
+  in
+  check_hand playerHand
+
+let rec let_player_select game =
+  if check_forced_pickup game then (
+    print_endline
+      "You have no valid cards to play. You must pick up a card, click enter \
+       to continue: ";
+    ignore (read_line ());
+    let add_card_to_player_cards =
+      GameInterface.add_cards_to_hand game
         (GameInterface.get_curr_player game)
-        add_card_to_player_cards
-  | _ ->
-      let cards_post_remove =
-        remove_card (int_of_string input)
-          (GameInterface.get_player_cards game
-             (GameInterface.get_curr_player game))
-      in
-      let card_selected =
-        get_selected_card (int_of_string input)
-          (GameInterface.get_player_cards game
-             (GameInterface.get_curr_player game))
-      in
+        1
+    in
+    print_endline
+      ("Your new hand is: "
+      ^ GameInterface.card_list_to_string add_card_to_player_cards);
+    GameInterface.edit_player_cards game
+      (GameInterface.get_curr_player game)
+      add_card_to_player_cards)
+  else (
+    print_endline "Select a card to place down";
+    print_string "> ";
+    let input = read_line () in
+    let cards_post_remove =
+      remove_card (int_of_string input)
+        (GameInterface.get_player_cards game
+           (GameInterface.get_curr_player game))
+    in
+    let card_selected =
+      get_selected_card (int_of_string input)
+        (GameInterface.get_player_cards game
+           (GameInterface.get_curr_player game))
+    in
+    let prev_card = GameInterface.get_curr_card game in
+    let card_validated = validate_card card_selected prev_card in
+    if card_validated then (
       GameInterface.chance_curr_card game
         (GameInterface.handle_wild (Some card_selected));
       print_endline (GameInterface.card_list_to_string cards_post_remove);
       print_endline "";
       GameInterface.edit_player_cards game
         (GameInterface.get_curr_player game)
-        cards_post_remove
+        cards_post_remove)
+    else (
+      print_endline
+        (GameInterface.card_to_string card_selected
+        ^ " is an invalid card, please pick a valid card");
+      let_player_select game))
 
 let player_turn game =
   display_player_cards game;
@@ -410,7 +489,7 @@ let player_turn game =
 let rec play_game game =
   GameInterface.print_curr_card game;
   if GameInterface.check_if_win (GameInterface.get_players game) then
-    print_endline "bye"
+    print_endline "Congratulations, you won!"
   else play_game (player_turn game)
 
 let create_game players =
