@@ -20,11 +20,11 @@ type player = {
 module type Game = sig
   type 'a t
 
-  val empty : 'a t
+  val empty : bool -> card list -> 'a t
   val get_player_number : 'a t -> int
   val get_player_num_of_cards : 'a t -> int -> int
   val get_player_cards : 'a t -> int -> card list
-  val create_players : 'a t -> int -> 'a t
+  val create_players : 'a t -> int -> bool -> 'a t
   val players_to_string : 'a t -> string
   val card_to_string : card -> string
   val cards_to_string : 'a t -> string
@@ -38,6 +38,7 @@ module type Game = sig
   val check_if_win : player list -> bool
   val get_players : 'a t -> player list
   val get_curr_card : 'a t -> card
+  val get_avail_cards : 'a t -> card list
   val change_direction : 'a t -> unit
   val get_direction : 'a t -> directions
   val next_player : 'a t -> 'a t
@@ -122,6 +123,7 @@ let wild_cards = [ Wild ]
 (*SHUFFLE CODE IS COPY AND PASTED FROM STACK OVERFLOW
     https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml*)
 let shuffle d =
+  Random.self_init ();
   let nd = List.map (fun c -> (Random.bits (), c)) d in
   let sond = List.sort compare nd in
   List.map snd sond
@@ -142,14 +144,23 @@ module GameInstance : Game = struct
     mutable direction : directions;
   }
 
-  let empty =
-    {
-      players = [];
-      available_cards = all_cards;
-      curr_card = None;
-      curr_player = 0;
-      direction = Clockwise;
-    }
+  let empty test cards =
+    if not test then
+      {
+        players = [];
+        available_cards = all_cards;
+        curr_card = None;
+        curr_player = 0;
+        direction = Clockwise;
+      }
+    else
+      {
+        players = [];
+        available_cards = cards;
+        curr_card = None;
+        curr_player = 0;
+        direction = Clockwise;
+      }
 
   let save_user_input (print_func : unit) : string =
     print_func;
@@ -176,6 +187,8 @@ module GameInstance : Game = struct
 
   let get_curr_card (game : 'a t) : card =
     match game.curr_card with Some v -> v | None -> failwith "No card placed"
+
+  let get_avail_cards (game : 'a t) : card list = game.available_cards
 
   let get_direction (game : 'a t) : directions =
     match game.direction with
@@ -225,10 +238,10 @@ module GameInstance : Game = struct
       },
       remain_cards )
 
-  let rec create_players (game : 'a t) (player_num : int) : 'a t =
-    match player_num with
-    | 0 -> game
-    | _ ->
+  let rec create_players (game : 'a t) (player_num : int) (test : bool) : 'a t =
+    match (player_num, test) with
+    | 0, _ -> game
+    | _, false ->
         let player, cards =
           create_player game.available_cards (save_player_name ())
         in
@@ -240,7 +253,20 @@ module GameInstance : Game = struct
             curr_player = game.curr_player;
             direction = game.direction;
           }
-          (player_num - 1)
+          (player_num - 1) false
+    | _, true ->
+        let player, cards =
+          create_player game.available_cards (string_of_int player_num)
+        in
+        create_players
+          {
+            available_cards = cards;
+            players = game.players @ [ player ];
+            curr_card = game.curr_card;
+            curr_player = game.curr_player;
+            direction = game.direction;
+          }
+          (player_num - 1) true
 
   let make_curr_card (game : 'a t) : 'a t =
     let curr_card, remain =
@@ -316,7 +342,11 @@ module GameInstance : Game = struct
 
   let add_cards_to_hand game p_num num : card list =
     let player = List.nth game.players p_num in
-    fst (get_n_cards game.available_cards player.cards num)
+    let returnval, cardsleft =
+      get_n_cards game.available_cards player.cards num
+    in
+    game.available_cards <- cardsleft;
+    returnval
 
   let change_direction (game : 'a t) : unit =
     match game.direction with
@@ -332,7 +362,7 @@ module GameInstance : Game = struct
   let rec handle_wild (card : card option) (user_input : string) : card option =
     match card with
     | Some Wild -> (
-        match user_input with
+        match String.lowercase_ascii user_input with
         | "red" -> Some (PlacedWild Red)
         | "yellow" -> Some (PlacedWild Yellow)
         | "blue" -> Some (PlacedWild Blue)
@@ -526,4 +556,6 @@ let rec play_game game =
 let create_game players =
   play_game
     (GameInterface.make_curr_card
-       (GameInterface.create_players GameInterface.empty (int_of_string players)))
+       (GameInterface.create_players
+          (GameInterface.empty false [])
+          (int_of_string players) false))

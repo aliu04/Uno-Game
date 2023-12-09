@@ -1,1 +1,75 @@
-2023-12-09T00:53:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:0:test if create_players makes the correct number of players for a 4 player game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:0:test if create_players makes the correct number of players for a 4 player game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:0:test if create_players makes the correct number of players for a 4 player game is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:0:test if create_players makes the correct number of players for a 4 player game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:2:test number of players in empty_game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:2:test number of players in empty_game is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:2:test number of players in empty_game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:4:test create_players gives 10 players 7 cards each.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:4:test create_players gives 10 players 7 cards each is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:4:test create_players gives 10 players 7 cards each.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:5:test players_to_string when 4 players.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:5:test players_to_string when 4 players is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:5:test players_to_string when 4 players.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:7:test players_to_string on empty game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:7:test players_to_string on empty game is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:7:test players_to_string on empty game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:9:test next_player.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:9:test next_player is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:9:test next_player.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:11:test handle_wild, changing the color to red.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:11:test handle_wild, changing the color to red is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:11:test handle_wild, changing the color to red.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:13:test handle_wild, changing the color to blue.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:13:test handle_wild, changing the color to blue is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:13:test handle_wild, changing the color to blue.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:15:test handle_wild, changing the color to green.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:15:test handle_wild, changing the color to green is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:15:test handle_wild, changing the color to green.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:17:test handle_wild, for a none card.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:17:test handle_wild, for a none card is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:17:test handle_wild, for a none card.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:19:Tests if adding 2 cards to a player works with add_cards_to_hand
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:       Based on the hard coded test cards we pass to the Test_Game function
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     we are able to check that the 2 cards given to the player are the top 
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     2 cards of the remaining deck.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:19:Tests if adding 2 cards to a player works with add_cards_to_hand
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:       Based on the hard coded test cards we pass to the Test_Game function
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     we are able to check that the 2 cards given to the player are the top 
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     2 cards of the remaining deck is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:19:Tests if adding 2 cards to a player works with add_cards_to_hand
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:       Based on the hard coded test cards we pass to the Test_Game function
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     we are able to check that the 2 cards given to the player are the top 
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     2 cards of the remaining deck.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:22:Tests edit_player_cards and then get_player_cards for the fourth player.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:22:Tests edit_player_cards and then get_player_cards for the fourth player is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:22:Tests edit_player_cards and then get_player_cards for the fourth player.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:24:Checks available cards left after giving 2 cards to player 0.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:24:Checks available cards left after giving 2 cards to player 0 is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:24:Checks available cards left after giving 2 cards to player 0.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:25:Adds 2 cards to hand for the first player, then with those remaining cards
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     adds 2 cards to the next player.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:25:Adds 2 cards to hand for the first player, then with those remaining cards
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     adds 2 cards to the next player is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:25:Adds 2 cards to hand for the first player, then with those remaining cards
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     adds 2 cards to the next player.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:27:Tests get_direction for the initial game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:27:Tests get_direction for the initial game is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:27:Tests get_direction for the initial game.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:30:Given the initial game and clockwise direction, checks that the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     next player of the next player should be at index 2.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:30:Given the initial game and clockwise direction, checks that the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     next player of the next player should be at index 2 is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:30:Given the initial game and clockwise direction, checks that the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     next player of the next player should be at index 2.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:32:Given the initial game and counterclockwise direction, checks that the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     next player of the next player should be at index 2.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:32:Given the initial game and counterclockwise direction, checks that the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     next player of the next player should be at index 2 is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:32:Given the initial game and counterclockwise direction, checks that the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     next player of the next player should be at index 2.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Start test uno test suite:34:Checks the winner function for a game by manually setting one of the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     players cards to the empty list.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: Test uno test suite:34:Checks the winner function for a game by manually setting one of the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     players cards to the empty list is successful.
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I: End test uno test suite:34:Checks the winner function for a game by manually setting one of the
+2023-12-09T13:25:23+00:00 dhcp-vl2041-111.eduroam.cornell.edu#01 I:     players cards to the empty list.
