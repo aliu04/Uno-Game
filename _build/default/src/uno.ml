@@ -315,7 +315,7 @@ module GameInstance : Game = struct
         h :: cards
 
   let add_cards_to_hand game p_num num : card list =
-    let player = List.nth game.players (p_num - 1) in
+    let player = List.nth game.players p_num in
     fst (get_n_cards game.available_cards player.cards num)
 
   let change_direction (game : 'a t) : unit =
@@ -484,11 +484,16 @@ let rec let_player_select game =
     let prev_card = GameInterface.get_curr_card game in
     let card_validated = validate_card card_selected prev_card in
     if card_validated then (
-      GameInterface.chance_curr_card game
-        (GameInterface.handle_wild (Some card_selected)
-           (GameInterface.save_wild_input ()));
-      print_endline (GameInterface.card_list_to_string cards_post_remove);
-      print_endline "";
+      (match card_selected with
+      | Wild ->
+          GameInterface.chance_curr_card game
+            (GameInterface.handle_wild (Some card_selected)
+               (GameInterface.save_wild_input ()))
+      | _ ->
+          GameInterface.chance_curr_card game (Some card_selected);
+          print_endline (GameInterface.card_list_to_string cards_post_remove);
+          print_endline "");
+
       GameInterface.edit_player_cards game
         (GameInterface.get_curr_player game)
         cards_post_remove)
