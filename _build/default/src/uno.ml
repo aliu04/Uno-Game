@@ -382,10 +382,17 @@ module GameInstance : Game = struct
   let next_player (game : 'a t) : 'a t =
     (if check_if_reverse (get_curr_card game) then change_direction game;
      if check_if_plus (get_curr_card game) then
-       let next_player = (game.curr_player + 1) mod get_player_number game in
+       let next_player =
+         let increm =
+           if get_direction game = Clockwise then 1
+           else get_player_number game - 1
+         in
+         (game.curr_player + increm) mod get_player_number game
+       in
        ignore
          (edit_player_cards game next_player
             (add_cards_to_hand game next_player 2)));
+
     match game.direction with
     | Clockwise ->
         if check_if_skip (get_curr_card game) then
@@ -550,7 +557,7 @@ let rec play_game game =
   print_endline "";
   GameInterface.print_curr_card game;
   if GameInterface.check_if_win (GameInterface.get_players game) then
-    print_endline "Congratulations, you won!"
+    print_endline "Congratulations, you won! \n Press enter again to end game"
   else play_game (player_turn game)
 
 let create_game players =

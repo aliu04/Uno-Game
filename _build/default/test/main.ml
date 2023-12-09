@@ -108,6 +108,13 @@ let test_helper_string out in1 _ =
      ^ pp_string in1)
     out in1
 
+let test_helper_int out in1 _ =
+  assert_equal ~printer:pp_string
+    ~msg:
+      ("function: Retruning a string output for the test\ninput: "
+      ^ pp_string (string_of_int in1))
+    (string_of_int out) (string_of_int in1)
+
 (* Test suite for basic functions of the game that are not
    dependent to the game state *)
 let game_tests =
@@ -242,12 +249,11 @@ let edit_cards_test =
     Regular (Yellow, 7);
   ]
 
-(* make a test that checks adds cards to hand for a player
-   after another adds cards to hand *)
 (* maybe make smth that toggles the total number of cards
    each player has to check ending the game
 
-   add none to first person add 3 to next person*)
+   add none check unchanged
+   adding cards and reversing directions*)
 
 (* Test suite for a four person game.
    Tests for functions that are dependent on each other*)
@@ -415,6 +421,116 @@ let four_player_test =
                          (Test_Game.add_cards_to_hand temp_game 0 0))
                       1 2))
                 1));
+    "Checks for skipping a player in clockwise direction"
+    >:: test_helper_int 2
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true four_person_cards)
+               4 true
+           in
+           Test_Game.chance_curr_card game_for_dir
+             (Some (Special (Green, Skip)));
+           Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
+    "Checks for skipping a player in clockwise direction"
+    >:: test_helper_int 2
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true four_person_cards)
+               4 true
+           in
+           Test_Game.change_direction game_for_dir;
+           Test_Game.chance_curr_card game_for_dir
+             (Some (Special (Green, Skip)));
+           Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
+    ( "Checks for the direction of the game when the currend card is reverse\n\
+      \    and the game is initially clockwise"
+    >:: fun _ ->
+      assert_equal Counterclockwise
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true four_person_cards)
+             4 true
+         in
+         Test_Game.chance_curr_card game_for_dir
+           (Some (Special (Green, Reverse)));
+         Test_Game.get_direction (Test_Game.next_player game_for_dir)) );
+    ( "Checks for the direction of the game when the currend card is reverse\n\
+      \    and the game is initially counterclockwise"
+    >:: fun _ ->
+      assert_equal Clockwise
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true four_person_cards)
+             4 true
+         in
+         Test_Game.chance_curr_card game_for_dir
+           (Some (Special (Green, Reverse)));
+         Test_Game.change_direction game_for_dir;
+         Test_Game.get_direction (Test_Game.next_player game_for_dir)) );
+    ( "Checks for the direction of the game when the currend card is reverse\n\
+      \    and the game is initially counterclockwise"
+    >:: fun _ ->
+      assert_equal Clockwise
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true four_person_cards)
+             4 true
+         in
+         Test_Game.chance_curr_card game_for_dir
+           (Some (Special (Green, Reverse)));
+         Test_Game.change_direction game_for_dir;
+         Test_Game.get_direction (Test_Game.next_player game_for_dir)) );
+    "Checks that the next player's cards has + 2 when the current card is +2\n\
+    \        in the initial clockwise direction"
+    >:: test_helper_string
+          (Test_Game.card_list_to_string
+             [
+               Regular (Blue, 4);
+               Regular (Red, 1);
+               Regular (Green, 3);
+               Regular (Yellow, 7);
+               Special (Green, Reverse);
+               Special (Red, Skip);
+               Wild;
+               Regular (Blue, 4);
+               Regular (Red, 1);
+             ])
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true four_person_cards)
+               4 true
+           in
+           Test_Game.chance_curr_card game_for_dir
+             (Some (Special (Green, PlusTwo)));
+           let updated_game = Test_Game.next_player game_for_dir in
+           Test_Game.card_list_to_string
+             (Test_Game.get_player_cards updated_game 1));
+    "Checks that the next player's cards has + 2 when the current card is +2\n\
+    \    but in the counterclockwise direction"
+    >:: test_helper_string
+          (Test_Game.card_list_to_string
+             [
+               Regular (Blue, 4);
+               Regular (Red, 1);
+               Regular (Green, 3);
+               Regular (Yellow, 7);
+               Special (Green, Reverse);
+               Special (Red, Skip);
+               Wild;
+               Regular (Blue, 4);
+               Regular (Red, 1);
+             ])
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true four_person_cards)
+               4 true
+           in
+           Test_Game.change_direction game_for_dir;
+           Test_Game.chance_curr_card game_for_dir
+             (Some (Special (Green, PlusTwo)));
+           let updated_game = Test_Game.next_player game_for_dir in
+           Test_Game.card_list_to_string
+             (Test_Game.get_player_cards updated_game 3));
     ( "Tests get_direction for the initial game" >:: fun _ ->
       assert_equal Clockwise (Test_Game.get_direction four_person_game) );
     ( "Tests gets the next player for the initial game\n\
@@ -481,6 +597,79 @@ let four_player_test =
          let game_after_player = Test_Game.next_player game_for_dir in
          Test_Game.change_direction game_after_player;
          Test_Game.get_curr_player (Test_Game.next_player game_after_player)) );
+    "Nests changing directions and adding cards to a player, uses the \
+     get_curr_player\n\
+    \    and edits that players cards"
+    >:: test_helper_string
+          (Test_Game.card_list_to_string
+             [
+               Regular (Blue, 4);
+               Regular (Red, 1);
+               Regular (Green, 3);
+               Regular (Yellow, 7);
+               Special (Green, Reverse);
+               Special (Red, Skip);
+               Wild;
+               Regular (Blue, 4);
+               Regular (Red, 1);
+             ])
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true four_person_cards)
+               4 true
+           in
+           Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+           let curr_player =
+             Test_Game.get_curr_player (Test_Game.next_player game_for_dir)
+           in
+           Test_Game.card_list_to_string
+             (Test_Game.get_player_cards
+                (Test_Game.edit_player_cards game_for_dir curr_player
+                   (Test_Game.add_cards_to_hand game_for_dir curr_player 2))
+                curr_player));
+    "Given the initial game, sets the next player, then changes the game to ccw\n\
+    \    gets that next player and the result should be the player at index 0\n\
+    \    In between each next player, will give 2 cards to each player\n\
+    \    Thus the final player is expected to have the same initial card set\n\
+    \    and Green and Yellow because those are the remaining cards in \
+     available cards\n\
+    \    "
+    >:: test_helper_string
+          (Test_Game.card_list_to_string
+             [
+               Regular (Blue, 4);
+               Regular (Red, 1);
+               Regular (Green, 3);
+               Regular (Yellow, 7);
+               Special (Green, Reverse);
+               Special (Red, Skip);
+               Wild;
+               Regular (Green, 3);
+               Regular (Yellow, 7);
+             ])
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true four_person_cards)
+               4 true
+           in
+           Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+           let game_after_player = Test_Game.next_player game_for_dir in
+           let game_after_cards =
+             Test_Game.edit_player_cards game_after_player
+               (Test_Game.get_curr_player game_after_player)
+               (Test_Game.add_cards_to_hand game_for_dir
+                  (Test_Game.get_curr_player game_after_player)
+                  2)
+           in
+           Test_Game.change_direction game_after_cards;
+           let curr_player =
+             Test_Game.get_curr_player (Test_Game.next_player game_after_cards)
+           in
+           Test_Game.card_list_to_string
+             (Test_Game.get_player_cards
+                (Test_Game.edit_player_cards game_for_dir curr_player
+                   (Test_Game.add_cards_to_hand game_for_dir curr_player 2))
+                curr_player));
     ( "Checks the winner function for a game by manually setting one of the\n\
       \    players cards to the empty list"
     >:: fun _ ->
@@ -492,6 +681,15 @@ let four_player_test =
                     (Test_Game.empty true four_person_cards)
                     4 true)
                  3 []))) );
+    ( "Checks the winner function for a game for a game where all the \n\
+      \    players have cards, should return false"
+    >:: fun _ ->
+      assert_equal false
+        (Test_Game.check_if_win
+           (Test_Game.get_players
+              (Test_Game.create_players
+                 (Test_Game.empty true four_person_cards)
+                 4 true))) );
   ]
 
 let tests = "uno test suite" >::: List.flatten [ game_tests @ four_player_test ]
