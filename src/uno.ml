@@ -392,7 +392,9 @@ module GameInterface = GameInstance
    | [], _ -> raise (Invalid_argument "Invalid card") *)
 
 let display_player_cards game =
+  print_endline "";
   print_endline (GameInterface.get_curr_player_name game ^ "'s turn");
+  print_endline "";
   print_endline
     (GameInterface.card_list_to_string
        (GameInterface.get_player_cards game
@@ -509,6 +511,7 @@ let player_turn game =
      | Some x -> print_string card_to_string x *)
 
 let rec play_game game =
+  print_endline "";
   GameInterface.print_curr_card game;
   if GameInterface.check_if_win (GameInterface.get_players game) then
     print_endline "Congratulations, you won!"

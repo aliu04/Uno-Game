@@ -7,8 +7,10 @@ let rec repl (eval : string -> unit) : unit =
   match input with
   | "" -> print_endline "bye"
   | _ ->
+      print_endline "";
       print_endline "Starting game...";
       input |> eval;
+      print_endline "";
       repl eval
 
 (*********** command line interface ***********)
