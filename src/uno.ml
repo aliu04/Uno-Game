@@ -483,7 +483,7 @@ let check_forced_pickup game =
     match hand with
     | [] -> true
     | h :: t ->
-        if validate_card h (GameInterface.get_curr_card game) = false then
+        if validate_card (GameInterface.get_curr_card game) h = false then
           check_hand t
         else false
   in
@@ -520,7 +520,7 @@ let rec let_player_select game =
            (GameInterface.get_curr_player game))
     in
     let prev_card = GameInterface.get_curr_card game in
-    let card_validated = validate_card card_selected prev_card in
+    let card_validated = validate_card prev_card card_selected in
     if card_validated then (
       (match card_selected with
       | Wild ->
