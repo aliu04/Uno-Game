@@ -1,10 +1,13 @@
 (** The variant to represent the different colors of the cards *)
+
 type color = Red | Green | Yellow | Blue
 
 (** The variant to represent the different kinds of special cards *)
+
 type special = Reverse | Skip | PlusTwo
 
 (** The variant for the card type*)
+
 type card =
   | Regular of color * int
   | Special of color * special
@@ -12,6 +15,7 @@ type card =
   | PlacedWild of color
 
 (** The variant for the direction the game will proceed in*)
+
 type directions = Clockwise | Counterclockwise
 
 (** The record type for player*)
@@ -25,6 +29,7 @@ type player = {
 }
 
 (** Each instance of a game will be of type Game*)
+
 module type Game = sig
   (*** Representation type of the game *)
 

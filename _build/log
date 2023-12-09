@@ -1,9 +1,9 @@
-# dune exec test/main.exe
+# dune build @doc
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Workspace root: /Users/cindyliang/cs3110/3110_Final_Project
 # Auto-detected concurrency: 10
-$ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1/n28111y95plfxqlwcks8dxy00000gn/T/dune_c334a4_output
+$ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1/n28111y95plfxqlwcks8dxy00000gn/T/dune_9355c7_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -116,6 +116,11 @@ $ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1
 #      ; windows_unicode = false
 #      }
 #  }
-$ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.uno.objs/byte -I src/.uno.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.uno.objs/native/uno.cmx -c -impl src/uno.ml)
-$ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/uno.cmxa src/.uno.objs/native/uno.cmx)
-$ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o test/main.exe src/uno.cmxa /Users/cindyliang/.opam/cs3110-2023fa/lib/ocaml/unix/unix.cmxa /Users/cindyliang/.opam/cs3110-2023fa/lib/stdlib-shims/stdlib_shims.cmxa /Users/cindyliang/.opam/cs3110-2023fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /Users/cindyliang/.opam/cs3110-2023fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)
+$ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc support-files -o _doc/_html/odoc.support)
+$ (cd _build/default/_doc/_odoc/pkg/Uno && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc compile --pkg Uno -o page-index.odoc ../../../_mlds/Uno/index.mld)
+$ (cd _build/default && /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.uno.objs/byte -no-alias-deps -opaque -o src/.uno.objs/byte/uno.cmi -c -intf src/uno.mli)
+$ (cd _build/default/src/.uno.objs/byte && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc compile -I . -I ../../../_doc/_odoc/pkg/Uno --pkg Uno -o uno.odoc uno.cmti)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc link -I ../_odoc/pkg/Uno -I ../../src/.uno.objs/byte -o ../_odocls/Uno/page-index.odocl ../_odoc/pkg/Uno/page-index.odoc)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc link -I ../_odoc/pkg/Uno -I ../../src/.uno.objs/byte -o ../_odocls/Uno/uno.odocl ../../src/.uno.objs/byte/uno.odoc)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc html-generate -o . --support-uri odoc.support --theme-uri odoc.support ../_odocls/Uno/page-index.odocl)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc html-generate -o . --support-uri odoc.support --theme-uri odoc.support ../_odocls/Uno/uno.odocl)
