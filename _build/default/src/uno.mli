@@ -1,3 +1,8 @@
+(** Uno is a game that involved 4-10 players and ends when a player has
+    no cards left in their hand.name
+    
+    The following code implements an OCaml version of this game*)
+
 (** The variant to represent the different colors of the cards *)
 
 type color = Red | Green | Yellow | Blue
