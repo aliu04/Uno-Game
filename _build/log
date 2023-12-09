@@ -3,7 +3,7 @@
 # Shared cache: disabled
 # Workspace root: /Users/cindyliang/cs3110/3110_Final_Project
 # Auto-detected concurrency: 10
-$ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1/n28111y95plfxqlwcks8dxy00000gn/T/dune_e66767_output
+$ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1/n28111y95plfxqlwcks8dxy00000gn/T/dune_8b82f2_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -116,3 +116,9 @@ $ /Users/cindyliang/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/p1
 #      ; windows_unicode = false
 #      }
 #  }
+$ (cd _build/default/_doc/_odoc/pkg/Uno && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc compile --pkg Uno -o page-index.odoc ../../../_mlds/Uno/index.mld)
+$ (cd _build/default/src/.uno.objs/byte && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc compile -I . -I ../../../_doc/_odoc/pkg/Uno --pkg Uno -o uno.odoc uno.cmti)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc link -I ../_odoc/pkg/Uno -I ../../src/.uno.objs/byte -o ../_odocls/Uno/page-index.odocl ../_odoc/pkg/Uno/page-index.odoc)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc link -I ../_odoc/pkg/Uno -I ../../src/.uno.objs/byte -o ../_odocls/Uno/uno.odocl ../../src/.uno.objs/byte/uno.odoc)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc html-generate -o . --support-uri odoc.support --theme-uri odoc.support ../_odocls/Uno/page-index.odocl)
+$ (cd _build/default/_doc/_html && /Users/cindyliang/.opam/cs3110-2023fa/bin/odoc html-generate -o . --support-uri odoc.support --theme-uri odoc.support ../_odocls/Uno/uno.odocl)

@@ -1,0 +1,32 @@
+(lang dune 3.10)
+(name Uno)
+(sections (lib .) (libexec .) (doc ../../doc/Uno))
+(files
+ (lib
+  (META
+   dune-package
+   opam
+   uno.a
+   uno.cma
+   uno.cmi
+   uno.cmt
+   uno.cmti
+   uno.cmx
+   uno.cmxa
+   uno.ml
+   uno.mli))
+ (libexec (uno.cmxs))
+ (doc (README.md)))
+(library
+ (name Uno)
+ (kind normal)
+ (archives (byte uno.cma) (native uno.cmxa))
+ (plugins (byte uno.cma) (native uno.cmxs))
+ (native_archives uno.a)
+ (main_module_name Uno)
+ (modes byte native)
+ (modules
+  (singleton
+   (obj_name uno)
+   (visibility public)
+   (source (path Uno) (intf (path uno.mli)) (impl (path uno.ml))))))

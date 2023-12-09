@@ -391,6 +391,7 @@ module GameInterface = GameInstance
    | _ :: t, x -> card_selected t (x - 1)
    | [], _ -> raise (Invalid_argument "Invalid card") *)
 
+(* Given a game, prints out the current player's name and their cards *)
 let display_player_cards game =
   print_endline "";
   print_endline (GameInterface.get_curr_player_name game ^ "'s turn");

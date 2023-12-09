@@ -1,0 +1,20 @@
+lib: [
+  "_build/install/default/lib/Uno/META"
+  "_build/install/default/lib/Uno/dune-package"
+  "_build/install/default/lib/Uno/opam"
+  "_build/install/default/lib/Uno/uno.a"
+  "_build/install/default/lib/Uno/uno.cma"
+  "_build/install/default/lib/Uno/uno.cmi"
+  "_build/install/default/lib/Uno/uno.cmt"
+  "_build/install/default/lib/Uno/uno.cmti"
+  "_build/install/default/lib/Uno/uno.cmx"
+  "_build/install/default/lib/Uno/uno.cmxa"
+  "_build/install/default/lib/Uno/uno.ml"
+  "_build/install/default/lib/Uno/uno.mli"
+]
+libexec: [
+  "_build/install/default/lib/Uno/uno.cmxs"
+]
+doc: [
+  "_build/install/default/doc/Uno/README.md"
+]
