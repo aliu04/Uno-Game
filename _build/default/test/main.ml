@@ -282,7 +282,7 @@ let four_player_test =
     ( "Sets the current card of the game and tests if it matches" >:: fun _ ->
       assert_equal
         (Regular (Blue, 4))
-        (Test_Game.chance_curr_card four_person_game (Some (Regular (Blue, 4)));
+        (Test_Game.change_curr_card four_person_game (Some (Regular (Blue, 4)));
          Test_Game.get_curr_card four_person_game) );
     ( "Tests if adding 2 cards to a player works with add_cards_to_hand\n\
       \      Based on the hard coded test cards we pass to the Test_Game \
@@ -455,10 +455,10 @@ let four_player_test =
                (Test_Game.empty true four_person_cards)
                4 true
            in
-           Test_Game.chance_curr_card game_for_dir
+           Test_Game.change_curr_card game_for_dir
              (Some (Special (Green, Skip)));
            Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
-    "Checks for skipping a player in clockwise direction"
+    "Checks for skipping a player in counterclockwise direction"
     >:: test_helper_int 2
           (let game_for_dir =
              Test_Game.create_players
@@ -466,7 +466,7 @@ let four_player_test =
                4 true
            in
            Test_Game.change_direction game_for_dir;
-           Test_Game.chance_curr_card game_for_dir
+           Test_Game.change_curr_card game_for_dir
              (Some (Special (Green, Skip)));
            Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
     ( "Checks for the direction of the game when the currend card is reverse\n\
@@ -478,7 +478,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir
+         Test_Game.change_curr_card game_for_dir
            (Some (Special (Green, Reverse)));
          Test_Game.get_direction (Test_Game.next_player game_for_dir)) );
     ( "Checks for the direction of the game when the current card is reverse\n\
@@ -490,7 +490,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir
+         Test_Game.change_curr_card game_for_dir
            (Some (Special (Green, Reverse)));
          Test_Game.change_direction game_for_dir;
          Test_Game.get_direction (Test_Game.next_player game_for_dir)) );
@@ -503,7 +503,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir
+         Test_Game.change_curr_card game_for_dir
            (Some (Special (Green, Reverse)));
          Test_Game.change_direction game_for_dir;
          Test_Game.get_direction (Test_Game.next_player game_for_dir)) );
@@ -528,7 +528,7 @@ let four_player_test =
                (Test_Game.empty true four_person_cards)
                4 true
            in
-           Test_Game.chance_curr_card game_for_dir
+           Test_Game.change_curr_card game_for_dir
              (Some (Special (Green, PlusTwo)));
            let updated_game = Test_Game.next_player game_for_dir in
            Test_Game.card_list_to_string
@@ -556,7 +556,7 @@ let four_player_test =
                4 true
            in
            Test_Game.change_direction game_for_dir;
-           Test_Game.chance_curr_card game_for_dir
+           Test_Game.change_curr_card game_for_dir
              (Some (Special (Green, PlusTwo)));
            let updated_game = Test_Game.next_player game_for_dir in
            Test_Game.card_list_to_string
@@ -576,7 +576,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
     ( "Given the initial game and clockwise direction, checks that the\n\
       \    next player of the next player should be at index 2"
@@ -587,7 +587,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.get_curr_player
            (Test_Game.next_player (Test_Game.next_player game_for_dir))) );
     ( "Given the initial game and counterclockwise direction, checks that the\n\
@@ -599,7 +599,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.change_direction game_for_dir;
          Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
     ( "Given the initial game and counterclockwise direction, checks that the\n\
@@ -611,7 +611,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.change_direction game_for_dir;
          Test_Game.get_curr_player
            (Test_Game.next_player (Test_Game.next_player game_for_dir))) );
@@ -624,7 +624,7 @@ let four_player_test =
              (Test_Game.empty true four_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          let game_after_player = Test_Game.next_player game_for_dir in
          Test_Game.change_direction game_after_player;
          Test_Game.get_curr_player (Test_Game.next_player game_after_player)) );
@@ -650,7 +650,7 @@ let four_player_test =
                (Test_Game.empty true four_person_cards)
                4 true
            in
-           Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+           Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
            let curr_player =
              Test_Game.get_curr_player (Test_Game.next_player game_for_dir)
            in
@@ -686,7 +686,7 @@ let four_player_test =
                (Test_Game.empty true four_person_cards)
                4 true
            in
-           Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+           Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
            let game_after_player = Test_Game.next_player game_for_dir in
            let game_after_cards =
              Test_Game.edit_player_cards game_after_player
@@ -823,10 +823,10 @@ let ten_player_test =
                (Test_Game.empty true ten_person_cards)
                10 true
            in
-           Test_Game.chance_curr_card game_for_dir
+           Test_Game.change_curr_card game_for_dir
              (Some (Special (Green, Skip)));
            Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
-    "Checks for skipping a player in clockwise direction"
+    "Checks for skipping a player in counterclockwise direction"
     >:: test_helper_int 8
           (let game_for_dir =
              Test_Game.create_players
@@ -834,7 +834,7 @@ let ten_player_test =
                10 true
            in
            Test_Game.change_direction game_for_dir;
-           Test_Game.chance_curr_card game_for_dir
+           Test_Game.change_curr_card game_for_dir
              (Some (Special (Green, Skip)));
            Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
     ( "Given the initial game and clockwise direction, checks that the\n\
@@ -846,7 +846,7 @@ let ten_player_test =
              (Test_Game.empty true ten_person_cards)
              10 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
     ( "Given the initial game and clockwise direction, checks that the\n\
       \    next player of the next player should be at index 2"
@@ -857,7 +857,7 @@ let ten_player_test =
              (Test_Game.empty true ten_person_cards)
              4 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.get_curr_player
            (Test_Game.next_player (Test_Game.next_player game_for_dir))) );
     ( "Given the initial game and counterclockwise direction, checks that the\n\
@@ -869,7 +869,7 @@ let ten_player_test =
              (Test_Game.empty true ten_person_cards)
              10 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.change_direction game_for_dir;
          Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
     ( "Given the initial game and counterclockwise direction, checks that the\n\
@@ -881,7 +881,7 @@ let ten_player_test =
              (Test_Game.empty true ten_person_cards)
              10 true
          in
-         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_curr_card game_for_dir (Some (Regular (Blue, 4)));
          Test_Game.change_direction game_for_dir;
          Test_Game.get_curr_player
            (Test_Game.next_player (Test_Game.next_player game_for_dir))) );

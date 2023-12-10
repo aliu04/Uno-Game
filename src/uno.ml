@@ -32,7 +32,7 @@ module type Game = sig
   val edit_player_cards : 'a t -> int -> card list -> 'a t
   val make_curr_card : 'a t -> 'a t
   val print_curr_card : 'a t -> unit
-  val chance_curr_card : 'a t -> card option -> unit
+  val change_curr_card : 'a t -> card option -> unit
   val add_cards_to_hand : 'a t -> int -> int -> card list
   val check_if_win : player list -> bool
   val get_players : 'a t -> player list
@@ -333,7 +333,7 @@ module GameInstance : Game = struct
     | None -> print_string "\n"
     | Some x -> print_string (card_to_string x ^ "\n")
 
-  let chance_curr_card game card : unit = game.curr_card <- card
+  let change_curr_card game card : unit = game.curr_card <- card
 
   let add_cards_to_hand game p_num num : card list =
     let player = List.nth game.players p_num in
@@ -518,11 +518,11 @@ let rec let_player_select game =
     if card_validated then (
       (match card_selected with
       | Wild ->
-          GameInterface.chance_curr_card game
+          GameInterface.change_curr_card game
             (GameInterface.handle_wild (Some card_selected)
                (GameInterface.save_wild_input ()))
       | _ ->
-          GameInterface.chance_curr_card game (Some card_selected);
+          GameInterface.change_curr_card game (Some card_selected);
           print_endline (GameInterface.card_list_to_string cards_post_remove 0);
           print_endline "");
 

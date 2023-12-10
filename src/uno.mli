@@ -103,7 +103,7 @@ module type Game = sig
 
   (** Given game g and card c, changes the current card of the game to c*)
 
-  val chance_curr_card : 'a t -> card option -> unit
+  val change_curr_card : 'a t -> card option -> unit
 
   (** Given game g, adds num random cards to the cards held by player
      represented by p_num *)
