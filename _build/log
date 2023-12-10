@@ -1,9 +1,9 @@
-# dune exec bin/main.exe
+# dune exec test/main.exe
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Workspace root: /Users/helenlei/3110_Final_Project
 # Auto-detected concurrency: 12
-$ /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/d8/qbth0hrn6mb5ntkj6wqzg9ym0000gn/T/dune_eb3f59_output
+$ /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/d8/qbth0hrn6mb5ntkj6wqzg9ym0000gn/T/dune_fdf925_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -103,6 +103,5 @@ $ /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlc.opt -config > /var/folders/d8/q
 #      }
 #  ; instrument_with = []
 #  }
-$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.uno.objs/byte -I src/.uno.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.uno.objs/native/uno.cmx -c -impl src/uno.ml)
-$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/uno.cmxa src/.uno.objs/native/uno.cmx)
-$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe src/uno.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)
+$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I test/.main.eobjs/byte -I test/.main.eobjs/native -I /Users/helenlei/.opam/cs3110-2023fa/lib/ocaml/unix -I /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2 -I /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2/advanced -I /Users/helenlei/.opam/cs3110-2023fa/lib/seq -I /Users/helenlei/.opam/cs3110-2023fa/lib/stdlib-shims -I src/.uno.objs/byte -I src/.uno.objs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.main.eobjs/native/dune__exe__Main.cmx -c -impl test/main.ml)
+$ (cd _build/default && /Users/helenlei/.opam/cs3110-2023fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o test/main.exe src/uno.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/ocaml/unix/unix.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/stdlib-shims/stdlib_shims.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2/advanced/oUnitAdvanced.cmxa /Users/helenlei/.opam/cs3110-2023fa/lib/ounit2/oUnit.cmxa test/.main.eobjs/native/dune__exe__Main.cmx)

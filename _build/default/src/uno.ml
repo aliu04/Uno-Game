@@ -215,6 +215,7 @@ module GameInstance : Game = struct
     | Special (_, v) -> if v = PlusTwo then true else false
     | _ -> false
 
+  (** Takes the first n cards from the list pool and adds them to the list receive *)
   let rec get_n_cards pool receive n =
     match (n, pool) with
     | 0, _ -> (receive, pool)
@@ -441,7 +442,6 @@ let display_player_cards game =
           (GameInterface.get_curr_player game))
        0)
 
-(* need to change this so that the current card is the users selection *)
 let rec remove_card idx lst =
   match (idx, lst) with
   | 0, _ :: t -> t
@@ -453,6 +453,8 @@ let rec get_selected_card idx lst =
   | 0, x :: _ -> x
   | x, _ :: t -> get_selected_card (x - 1) t
   | _ -> raise (Invalid_argument "Invalid card")
+
+(** Given two cards, prev and selected, checks whether the selected card can be played after the prev card *)
 
 let validate_card (prev : card) (selected : card) : bool =
   match prev with
