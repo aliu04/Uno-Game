@@ -273,12 +273,6 @@ let edit_cards_test =
     Regular (Yellow, 7);
   ]
 
-(* maybe make smth that toggles the total number of cards
-   each player has to check ending the game
-
-   add none check unchanged
-   adding cards and reversing directions*)
-
 (* Test suite for a four person game.
    Tests for functions that are dependent on each other*)
 
@@ -732,5 +726,168 @@ let four_player_test =
                  4 true))) );
   ]
 
-let tests = "uno test suite" >::: List.flatten [ game_tests @ four_player_test ]
+let ten_person_cards =
+  [
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Special (Green, Reverse);
+    Special (Red, Skip);
+    Wild;
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+    Regular (Blue, 4);
+    Regular (Red, 1);
+    Regular (Green, 3);
+    Regular (Yellow, 7);
+  ]
+
+(* Test suite for a 10 person game.
+   Tests for functions that are dependent on each other
+   Only tests for instances not covered by 4 person game
+   Which would be changing directions for players
+   since that is dependent on the number of players. *)
+let ten_player_test =
+  [
+    "Checks for skipping a player in clockwise direction"
+    >:: test_helper_int 2
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true ten_person_cards)
+               10 true
+           in
+           Test_Game.chance_curr_card game_for_dir
+             (Some (Special (Green, Skip)));
+           Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
+    "Checks for skipping a player in clockwise direction"
+    >:: test_helper_int 8
+          (let game_for_dir =
+             Test_Game.create_players
+               (Test_Game.empty true ten_person_cards)
+               10 true
+           in
+           Test_Game.change_direction game_for_dir;
+           Test_Game.chance_curr_card game_for_dir
+             (Some (Special (Green, Skip)));
+           Test_Game.get_curr_player (Test_Game.next_player game_for_dir));
+    ( "Given the initial game and clockwise direction, checks that the\n\
+      \    next player should be at index 1"
+    >:: fun _ ->
+      assert_equal 1
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true ten_person_cards)
+             10 true
+         in
+         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
+    ( "Given the initial game and clockwise direction, checks that the\n\
+      \    next player of the next player should be at index 2"
+    >:: fun _ ->
+      assert_equal 2
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true ten_person_cards)
+             4 true
+         in
+         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.get_curr_player
+           (Test_Game.next_player (Test_Game.next_player game_for_dir))) );
+    ( "Given the initial game and counterclockwise direction, checks that the\n\
+      \    next player should be at index 9"
+    >:: fun _ ->
+      assert_equal 9
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true ten_person_cards)
+             10 true
+         in
+         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_direction game_for_dir;
+         Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
+    ( "Given the initial game and counterclockwise direction, checks that the\n\
+      \    next player of the next player should be at index 8"
+    >:: fun _ ->
+      assert_equal 8
+        (let game_for_dir =
+           Test_Game.create_players
+             (Test_Game.empty true ten_person_cards)
+             10 true
+         in
+         Test_Game.chance_curr_card game_for_dir (Some (Regular (Blue, 4)));
+         Test_Game.change_direction game_for_dir;
+         Test_Game.get_curr_player
+           (Test_Game.next_player (Test_Game.next_player game_for_dir))) );
+  ]
+
+let tests =
+  "uno test suite"
+  >::: List.flatten [ game_tests @ four_player_test @ ten_player_test ]
+
 let _ = run_test_tt_main tests
