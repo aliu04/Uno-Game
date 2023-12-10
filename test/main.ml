@@ -2,9 +2,10 @@ open OUnit2
 open Uno
 module Test_Game = Uno.GameInterface
 
+(********************************************************************
+                            Testing Plan
+ ********************************************************************)
 (*
-   Testing Plan
-   -----
    Almost every function within the module type Game was tested using OUnit 
    tests. Functions that were manually tested included those that requireed user
    inputs such as select_card, save_player_name, and save_wild_input. 

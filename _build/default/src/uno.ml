@@ -33,7 +33,6 @@ module type Game = sig
   val make_curr_card : 'a t -> 'a t
   val print_curr_card : 'a t -> unit
   val chance_curr_card : 'a t -> card option -> unit
-  val add_curr_card_to_cards : 'a t -> card list -> card list
   val add_cards_to_hand : 'a t -> int -> int -> card list
   val check_if_win : player list -> bool
   val get_players : 'a t -> player list
@@ -336,13 +335,6 @@ module GameInstance : Game = struct
 
   let chance_curr_card game card : unit = game.curr_card <- card
 
-  let add_curr_card_to_cards game cards : card list =
-    match game.available_cards with
-    | [] -> cards
-    | h :: t ->
-        game.available_cards <- t;
-        h :: cards
-
   let add_cards_to_hand game p_num num : card list =
     let player = List.nth game.players p_num in
     let returnval, cardsleft =
@@ -422,15 +414,6 @@ end
 
 module GameInterface = GameInstance
 
-(* let create_game players =
-   GameInterface.players_to_string
-     (GameInterface.create_players GameInterface.empty (int_of_string players)) *)
-(* let rec card_selected cards input =
-   match (cards, input) with
-   | h :: t, 0 -> (h, t)
-   | _ :: t, x -> card_selected t (x - 1)
-   | [], _ -> raise (Invalid_argument "Invalid card") *)
-
 (* Given a game, prints out the current player's name and their cards *)
 let display_player_cards game =
   print_endline "";
@@ -442,19 +425,22 @@ let display_player_cards game =
           (GameInterface.get_curr_player game))
        0)
 
+(** This function removes the card at the given index from the list*)
 let rec remove_card idx lst =
   match (idx, lst) with
   | 0, _ :: t -> t
   | x, h :: t -> h :: remove_card (x - 1) t
   | _ -> raise (Invalid_argument "Invalid card")
 
+(** This function returns the card selected from the index in the list*)
 let rec get_selected_card idx lst =
   match (idx, lst) with
   | 0, x :: _ -> x
   | x, _ :: t -> get_selected_card (x - 1) t
   | _ -> raise (Invalid_argument "Invalid card")
 
-(** Given two cards, prev and selected, checks whether the selected card can be played after the prev card *)
+(** Given two cards, prev and selected, checks whether the selected card can 
+    be played after the prev card *)
 
 let validate_card (prev : card) (selected : card) : bool =
   match prev with
@@ -480,6 +466,8 @@ let validate_card (prev : card) (selected : card) : bool =
       | _ -> false)
   | _ -> false
 
+(*This function forces a user to pickup a card if they do not
+   have a card that matches the color/number of the current card*)
 let check_forced_pickup game =
   let playerHand =
     GameInterface.get_player_cards game (GameInterface.get_curr_player game)
@@ -494,6 +482,7 @@ let check_forced_pickup game =
   in
   check_hand playerHand
 
+(*This function handles the user placing down a card*)
 let rec let_player_select game =
   if check_forced_pickup game then (
     print_endline
@@ -546,18 +535,14 @@ let rec let_player_select game =
         ^ " is an invalid card, please pick a valid card");
       let_player_select game)
 
+(*This function allocates a turn to each player*)
 let player_turn game =
   display_player_cards game;
   GameInterface.next_player (let_player_select game)
 
-(* let card_to_string (c : card) : string =
-     "(" ^ color_to_string (fst c) ^ ", " ^ string_of_int (snd c) ^ ")"
-
-   let print_curr_card game =
-     match game.curr_card with
-     | None -> print_string ""
-     | Some x -> print_string card_to_string x *)
-
+(*This function takes in a game instance and checks if a player has won
+   if so then end the game, otherwise recursively call this
+    function to keep playing*)
 let rec play_game game =
   print_endline "";
   GameInterface.print_curr_card game;

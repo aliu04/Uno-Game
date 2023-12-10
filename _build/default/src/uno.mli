@@ -1,5 +1,5 @@
 (** Uno is a game that involved 4-10 players and ends when a player has
-    no cards left in their hand.name
+    no cards left in their hand.
     
     The following code implements an OCaml version of this game*)
 
@@ -36,9 +36,8 @@ type player = {
 (** Each instance of a game will be of type Game*)
 
 module type Game = sig
-  (*** Representation type of the game *)
-
   type 'a t
+  (** Representation type of the game *)
 
   (** Initializes the empty game
      If the game is a normal game instance, will simply use the available
@@ -47,7 +46,7 @@ module type Game = sig
 
   val empty : bool -> card list -> 'a t
 
-  (** Returns the number of players in the game *)
+  (** Given a game, returns the number of players in the game *)
 
   val get_player_number : 'a t -> int
 
@@ -105,9 +104,6 @@ module type Game = sig
   (** Given game g and card c, changes the current card of the game to c*)
 
   val chance_curr_card : 'a t -> card option -> unit
-
-  val add_curr_card_to_cards : 'a t -> card list -> card list
-  (** NOT SURE WHAT THIS DOES *)
 
   (** Given game g, adds num random cards to the cards held by player
      represented by p_num *)

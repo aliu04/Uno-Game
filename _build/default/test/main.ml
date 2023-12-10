@@ -2,9 +2,10 @@ open OUnit2
 open Uno
 module Test_Game = Uno.GameInterface
 
+(********************************************************************
+                            Testing Plan
+ ********************************************************************)
 (*
-   Testing Plan
-   -----
    Almost every function within the module type Game was tested using OUnit 
    tests. Functions that were manually tested included those that requireed user
    inputs such as select_card, save_player_name, and save_wild_input. 
@@ -860,7 +861,7 @@ let ten_player_test =
          Test_Game.get_curr_player
            (Test_Game.next_player (Test_Game.next_player game_for_dir))) );
     ( "Given the initial game and counterclockwise direction, checks that the\n\
-      \    next player should be at index 3"
+      \    next player should be at index 9"
     >:: fun _ ->
       assert_equal 9
         (let game_for_dir =
@@ -872,7 +873,7 @@ let ten_player_test =
          Test_Game.change_direction game_for_dir;
          Test_Game.get_curr_player (Test_Game.next_player game_for_dir)) );
     ( "Given the initial game and counterclockwise direction, checks that the\n\
-      \    next player of the next player should be at index 2"
+      \    next player of the next player should be at index 8"
     >:: fun _ ->
       assert_equal 8
         (let game_for_dir =
