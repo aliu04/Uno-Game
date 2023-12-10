@@ -18,7 +18,8 @@ let () =
   print_endline "\n\nWelcome to Uno.\n";
   print_endline "";
   print_endline
-    "Press [Enter] to read over instructions otherwise press any other key play";
+    "Press [Enter] to read over instructions otherwise press any other key to \
+     play";
   let input = read_line () in
   match input with
   | "" ->
