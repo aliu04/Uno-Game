@@ -85,7 +85,7 @@ module type Game = sig
 
   (** Given a list of cards, concatenates each card value to a string *)
 
-  val card_list_to_string : card list -> string
+  val card_list_to_string : card list -> int -> string
 
   (** Given game g, a player at index p and a new card list c
         edit_player_cards g p c will update the player's cards at index p

@@ -2,6 +2,30 @@ open OUnit2
 open Uno
 module Test_Game = Uno.GameInterface
 
+(*
+   Testing Plan
+   -----
+   Almost every function within the module type Game was tested using OUnit 
+   tests. Functions that were manually tested included those that requireed user
+   inputs such as select_card, save_player_name, and save_wild_input. 
+   To test these functions, we ran make uno to check that the game behaves
+   as we would expect it to with manual use inputs. 
+
+   Tests were developed using glass box testing. Several tests include iterations
+   of the same function but testing various branches of the code. For example
+   for the function next_player, test cases are written for when the
+   current card is reverse, plus two, or skip. 
+
+   The game module stores the essential logic behind our whole game. Thus, being
+   able to write a test cases for all the essential functions within our module
+   ensures correctness of our logic. Further, by using glass box testing, 
+   we ensure that the tests touch upon all possible combinations our game could
+   go through. Although our test suite is limited by the fact that we can't 
+   test instances of manual user input, we manually incremented next_player
+   features to act as if we are iterating through turns in the game. 
+
+
+*)
 let test_cards =
   [
     Regular (Blue, 4);

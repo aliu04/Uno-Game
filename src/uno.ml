@@ -28,7 +28,7 @@ module type Game = sig
   val players_to_string : 'a t -> string
   val card_to_string : card -> string
   val cards_to_string : 'a t -> string
-  val card_list_to_string : card list -> string
+  val card_list_to_string : card list -> int -> string
   val edit_player_cards : 'a t -> int -> card list -> 'a t
   val make_curr_card : 'a t -> 'a t
   val print_curr_card : 'a t -> unit
@@ -310,17 +310,19 @@ module GameInstance : Game = struct
     | Wild -> "(Wild)"
     | PlacedWild c -> "(" ^ color_to_string c ^ ")"
 
-  let rec card_list_to_string (c : card list) : string =
+  let rec card_list_to_string (c : card list) (i : int) : string =
     match c with
     | [] -> ""
-    | h :: [] -> card_to_string h
-    | h :: t -> card_to_string h ^ "; " ^ card_list_to_string t
+    | h :: [] -> string_of_int i ^ ": " ^ card_to_string h
+    | h :: t ->
+        string_of_int i ^ ": " ^ card_to_string h ^ "; "
+        ^ card_list_to_string t (i + 1)
 
   let rec players_cards_to_list (pl : player list) : string =
     match pl with
     | [] -> ""
     | h :: t ->
-        (h.name ^ ": " ^ "[" ^ card_list_to_string h.cards)
+        (h.name ^ ": " ^ "[" ^ card_list_to_string h.cards 0)
         ^ "]" ^ "\n" ^ players_cards_to_list t
 
   let cards_to_string (game : 'a t) : string =
@@ -436,7 +438,8 @@ let display_player_cards game =
   print_endline
     (GameInterface.card_list_to_string
        (GameInterface.get_player_cards game
-          (GameInterface.get_curr_player game)))
+          (GameInterface.get_curr_player game))
+       0)
 
 (* need to change this so that the current card is the users selection *)
 let rec remove_card idx lst =
@@ -502,7 +505,7 @@ let rec let_player_select game =
     in
     print_endline
       ("Your new hand is: "
-      ^ GameInterface.card_list_to_string add_card_to_player_cards);
+      ^ GameInterface.card_list_to_string add_card_to_player_cards 0);
     GameInterface.edit_player_cards game
       (GameInterface.get_curr_player game)
       add_card_to_player_cards)
@@ -529,7 +532,7 @@ let rec let_player_select game =
                (GameInterface.save_wild_input ()))
       | _ ->
           GameInterface.chance_curr_card game (Some card_selected);
-          print_endline (GameInterface.card_list_to_string cards_post_remove);
+          print_endline (GameInterface.card_list_to_string cards_post_remove 0);
           print_endline "");
 
       GameInterface.edit_player_cards game
