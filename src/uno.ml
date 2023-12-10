@@ -117,7 +117,7 @@ let green_cards =
     Special (Green, PlusTwo);
   ]
 
-let wild_cards = [ Wild ]
+let wild_cards = [ Wild; Wild; Wild; Wild; Wild; Wild; Wild; Wild ]
 
 (*SHUFFLE CODE IS COPY AND PASTED FROM STACK OVERFLOW
     https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml*)
@@ -547,7 +547,7 @@ let rec play_game game =
   print_endline "";
   GameInterface.print_curr_card game;
   if GameInterface.check_if_win (GameInterface.get_players game) then
-    print_endline "Congratulations, you won! \n Press enter again to end game"
+    print_endline "Congratulations, you won! \nPress enter again to end game"
   else play_game (player_turn game)
 
 let create_game players =
